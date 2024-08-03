@@ -6,7 +6,7 @@ import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [HttpModule, ConfigModule.forRoot()],
+  imports: [HttpModule, ConfigModule.forRoot({isGlobal: true})],
   controllers: [AppController, StockController],
   providers: [AppService],
 })

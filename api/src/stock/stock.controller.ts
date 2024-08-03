@@ -12,12 +12,14 @@ export class StockController {
   ) {}
 
   @Get('historical')
-  getHistoricalData(@Query('symbol') symbol: string): Observable<any> {
+  getHistoricalData(@Query('symbol') symbol: string): any {
     const apiKey = this.configService.get<string>('MARKETSTACK_API_KEY');
     const url = `http://api.marketstack.com/v1/eod?access_key=${apiKey}&symbols=${symbol}`;
 
-    return this.httpService.get(url).pipe(
+    const marketStackData = this.httpService.get(url).pipe(
       map(response => response.data)
     );
+    console.log(marketStackData)
+    return marketStackData
   }
 }
