@@ -8,8 +8,9 @@ datasource db {
 }
 
 model StockSnapshot {
-  id        Int      @id @default(autoincrement())
-  symbol    String   
-  name      String
-  prices    Json
+  id            Int      @id @default(autoincrement())
+  symbol        String   
+  name          String
+  dateGenerated DateTime
+  prices        Json
 }
