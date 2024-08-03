@@ -19,7 +19,7 @@ const StockData = () => {
       {data && (
         <div>
           <h3>Random Stock Data</h3>
-          <pre>{JSON.stringify(data)}</pre>
+          <pre>{JSON.stringify(data, null, 2)}</pre>
         </div>
       )}
     </div>

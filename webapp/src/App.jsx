@@ -44,9 +44,11 @@ function App() {
         <Title variant="h1" component="h1" style={{ fontSize: isSmallScreen ? '2rem' : '3rem' }}>
           Stock Guesser
         </Title>
-        <StyledContainer>
+
+        {/* <StyledContainer>
           <StockData />
-        </StyledContainer>
+        </StyledContainer> */}
+        
       </Box>
     </Root>
   );

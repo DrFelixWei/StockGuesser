@@ -1,24 +1,42 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Controller('stock')
 export class StockController {
   private readonly stockSymbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA'];
-  
+
   constructor(
     private readonly httpService: HttpService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly prisma: PrismaService,
   ) {}
 
+  @Get('all')
+  async getAllStocks() {
+    return this.prisma.stockSnapshot.findMany();
+  }
+
+  @Post('create')
+  async createStock(@Body() data: { symbol: string; name: string; prices: any[] }) {
+    return this.prisma.stockSnapshot.create({
+      data: {
+        symbol: data.symbol,
+        name: data.name,
+        prices: data.prices,
+      },
+    });
+  }
+
   @Get('random')
-  getRandomStockPrice(): Observable<any> {
+  getRandomStockPrices(): Observable<any> {
     const apiKey = this.configService.get<string>('MARKETSTACK_API_KEY');
     const randomSymbol = this.getRandomSymbol();
-    const randomDate = this.getRandomDate();
-    const url = `http://api.marketstack.com/v1/eod?access_key=${apiKey}&symbols=${randomSymbol}&date_from=${randomDate}&date_to=${randomDate}`;
+    const { startDate, endDate } = this.getRandomDateRange();
+    const url = `http://api.marketstack.com/v1/eod?access_key=${apiKey}&symbols=${randomSymbol}&date_from=${startDate}&date_to=${endDate}`;
 
     return this.httpService.get(url).pipe(
       map(response => response.data)
@@ -30,10 +48,17 @@ export class StockController {
     return this.stockSymbols[randomIndex];
   }
 
-  private getRandomDate(): string {
-    const start = new Date(2020, 0, 1); // Start date: Jan 1, 2020
-    const end = new Date(); // End date: today
-    const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-    return randomDate.toISOString().split('T')[0]; // Return date in YYYY-MM-DD format
+  private getRandomDateRange(): { startDate: string; endDate: string } {
+    const endDate = new Date();
+    const startDate = new Date(endDate);
+    startDate.setMonth(startDate.getMonth() - 1); // 1 month before the endDate
+    return {
+      startDate: this.formatDate(startDate),
+      endDate: this.formatDate(endDate)
+    };
+  }
+
+  private formatDate(date: Date): string {
+    return date.toISOString().split('T')[0]; // Return date in YYYY-MM-DD format
   }
 }

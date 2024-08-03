@@ -4,10 +4,11 @@ import { AppService } from './app.service';
 import { StockController } from './stock/stock.controller';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
+import { PrismaService } from './prisma/prisma.service';
 
 @Module({
   imports: [HttpModule, ConfigModule.forRoot({isGlobal: true})],
   controllers: [AppController, StockController],
-  providers: [AppService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}
