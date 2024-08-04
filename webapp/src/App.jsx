@@ -1,16 +1,38 @@
 import React from 'react';
 import { Container, CssBaseline, Box, Typography, useMediaQuery } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled, useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
 import StockData from './components/StockData';
 import './App.css';
+
+const theme = createTheme({
+  palette: {
+    background: {
+      default: '#000000',
+    },
+    text: {
+      primary: '#F5F5F5',
+    },
+  },
+});
 
 const Root = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   minHeight: '100vh',
-  backgroundColor: '#f5f5f5',
-  paddingLeft: theme.spacing(2),
-  paddingRight: theme.spacing(2),
+  backgroundColor: theme.palette.background.default,
+  color: theme.palette.text.primary,
+  position: 'relative',
+  width: '100vw',
+  maxWidth: '100vh',
+  overflow: 'hidden',
+}));
+
+const VerticalLine = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  bottom: 0,
+  width: '4px',
+  backgroundColor: theme.palette.text.primary,
 }));
 
 const StyledContainer = styled(Container)(({ theme }) => ({
@@ -24,33 +46,35 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   boxShadow: theme.shadows[5],
   borderRadius: theme.shape.borderRadius,
   width: '100%',
-  maxWidth: '600px',
+  color: theme.palette.text.primary,
 }));
 
 const Title = styled(Typography)(({ theme }) => ({
-  marginTop: theme.spacing(3),
-  marginBottom: theme.spacing(3),
+  margin: theme.spacing(3),
   textAlign: 'center',
+  color: theme.palette.text.primary,
 }));
 
 function App() {
-  const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Root>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box display="flex" flexDirection="column" alignItems="center" width="100%">
-        <Title variant="h1" component="h1" style={{ fontSize: isSmallScreen ? '2rem' : '3rem' }}>
-          Stock Guesser
-        </Title>
+      <Root>
+        <VerticalLine style={{ left: 0 }} />
+        <VerticalLine style={{ right: 0 }} />
+        <Box display="flex" flexDirection="column" alignItems="center" width="100%">
+          <Title variant="h1" component="h1" style={{ fontSize: isSmallScreen ? '2rem' : '3rem' }}>
+            Stock Guesser
+          </Title>
 
-        {/* <StyledContainer>
-          <StockData />
-        </StyledContainer> */}
-        
-      </Box>
-    </Root>
+          {/* <StyledContainer>
+            <StockData />
+          </StyledContainer> */}
+        </Box>
+      </Root>
+    </ThemeProvider>
   );
 }
 
