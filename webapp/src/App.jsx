@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, CssBaseline, Box, Typography, useMediaQuery } from '@mui/material';
 import { styled, useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
 import StockData from './components/StockData';
+import UserInput from './components/UserInput';
 import './App.css';
 
 const theme = createTheme({
@@ -72,6 +73,8 @@ function App() {
           {/* <StyledContainer>
             <StockData />
           </StyledContainer> */}
+
+          <UserInput />
         </Box>
       </Root>
     </ThemeProvider>
