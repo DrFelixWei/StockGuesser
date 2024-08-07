@@ -35,6 +35,8 @@ $ yarn install
 ## Running the app
 
 ```bash
+$ npm run start:dev
+
 # development
 $ yarn run start
 
