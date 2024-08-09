@@ -28,6 +28,12 @@
 
 ## Installation
 
+For Database (postgres)
+1. update env file in api db connection string
+2. RUN npx prisma migrate deploy
+3. RUN npx prisma generate
+
+
 ```bash
 $ yarn install
 ```
