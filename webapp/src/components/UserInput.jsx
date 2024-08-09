@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Slider, Box, TextField } from '@mui/material';
+import { Slider, Box, TextField, Button } from '@mui/material';
 import { styled } from '@mui/system';
 
 // Function to calculate color based on value
@@ -43,29 +43,42 @@ const UserInput = () => {
     }
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('Submitted value:', value);
+    // You can replace this console.log with any function to handle the submitted value
+  };
+
   // Calculate color based on slider value
   const sliderColor = getColorFromValue(value);
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', height: '400px', justifyContent: 'center' }}>
-      <TextField
-        label="Value"
-        variant="outlined"
-        value={value}
-        onChange={handleInputChange}
-        inputProps={{ min: -100, max: 100, type: 'number' }}
-        sx={{ marginRight: 2, width: '100px' }}
-      />
-      <VerticalSlider
-        orientation="vertical"
-        value={value}
-        onChange={handleSliderChange}
-        min={-100}
-        max={100}
-        aria-labelledby="vertical-slider"
-        color={sliderColor} // Pass the color as a prop
-      />
-    </Box>
+    <form onSubmit={handleSubmit}>
+      <Box sx={{ display: 'flex', alignItems: 'center', height: '200px', justifyContent: 'center' }}>
+        <TextField
+          label="Value"
+          variant="outlined"
+          value={value}
+          onChange={handleInputChange}
+          inputProps={{ min: -100, max: 100, type: 'number' }}
+          sx={{ marginRight: 2, width: '100px' }}
+        />
+        <VerticalSlider
+          orientation="vertical"
+          value={value}
+          onChange={handleSliderChange}
+          min={-100}
+          max={100}
+          aria-labelledby="vertical-slider"
+          color={sliderColor} // Pass the color as a prop
+        />
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+        <Button type="submit" variant="contained" color="primary">
+          Submit
+        </Button>
+      </Box>
+    </form>
   );
 };
 
