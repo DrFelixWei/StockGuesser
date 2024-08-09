@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from '@mui/material';
 
 const StockData = () => {
   const [data, setData] = useState(null);
@@ -14,7 +15,9 @@ const StockData = () => {
 
   return (
     <div>
-      <button onClick={fetchData}>Fetch Random Stock Data</button>
+      <Button type="submit" variant="contained" color="primary" onClick={fetchData}>
+        Fetch Random Stock Data
+      </Button>
       {loading && <p>Loading...</p>}
       {data && (
         <div>
