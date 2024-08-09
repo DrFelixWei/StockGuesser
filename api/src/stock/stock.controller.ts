@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
+import { StockInput } from './stock.input'; 
 
 @Controller('stock')
 export class StockController {
@@ -21,12 +22,13 @@ export class StockController {
   }
 
   @Post('create')
-  async createStock(@Body() data: { symbol: string; name: string; prices: any[] }) {
+  async createStock(@Body() data: StockInput) {
     return this.prisma.stockSnapshot.create({
       data: {
         symbol: data.symbol,
         name: data.name,
         prices: data.prices,
+        dateGenerated: data.dateGenerated || new Date(),  
       },
     });
   }
