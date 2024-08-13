@@ -5,10 +5,34 @@ import { Observable } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { StockInput } from './stock.input'; 
+import { 
+  tickersTech, 
+  tickersHealthcare, 
+  tickersFinancial, 
+  tickersConsumerDiscretionary, 
+  tickersEnergy, 
+  tickersIndustrials, 
+  tickersConsumerStaples, 
+  tickersUtilities, 
+  tickersTelecommunications, 
+  tickersMaterials 
+} from './tickers';
 
 @Injectable()
 export class StockService {
-  private readonly stockSymbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA'];
+
+  private readonly tickers = [
+    tickersTech, 
+    tickersHealthcare, 
+    tickersFinancial, 
+    tickersConsumerDiscretionary, 
+    tickersEnergy, 
+    tickersIndustrials, 
+    tickersConsumerStaples, 
+    tickersUtilities, 
+    tickersTelecommunications, 
+    tickersMaterials,
+  ];
 
   constructor(
     private readonly httpService: HttpService,
@@ -49,7 +73,7 @@ export class StockService {
 
 
   async saveSnapshot() {
-    
+
   }
 
 
@@ -77,8 +101,9 @@ export class StockService {
   }
 
   private getRandomSymbol(): string {
-    const randomIndex = Math.floor(Math.random() * this.stockSymbols.length);
-    return this.stockSymbols[randomIndex];
+    const r1 = Math.floor(Math.random() * this.tickers.length);
+    const r2 = Math.floor(Math.random() * this.tickers[r1].length);
+    return this.tickers[r1][r2];
   }
 
   private getRandomDateRange(): { startDate: string; endDate: string } {
