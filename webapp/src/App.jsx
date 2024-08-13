@@ -70,9 +70,9 @@ function App() {
             Stock Guesser
           </Title>
 
-          {/* <StyledContainer> */}
+          {/* <StyledContainer>
             <StockData />
-          {/* </StyledContainer> */}
+          </StyledContainer> */}
 
           <UserInput />
         </Box>

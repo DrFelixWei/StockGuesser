@@ -4,11 +4,3 @@ export class StockInput {
   prices: any[];
   dateGenerated?: Date;
 }
-
-// import { Field, InputType, Int } from '@nestjs/graphql'
-
-// @InputType('StockInput')
-// export class StockInput {
-//   @Field(() => Int)
-//   id: number
-// }
