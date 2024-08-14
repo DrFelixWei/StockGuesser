@@ -15,7 +15,7 @@ import {
   tickersConsumerStaples, 
   tickersUtilities, 
   tickersTelecommunications, 
-  tickersMaterials 
+  tickersMaterials, 
 } from './tickers';
 
 @Injectable()
@@ -68,17 +68,29 @@ export class StockService {
   }
 
   async generateRandomSnapshot() {
+    const apiKey = this.configService.get<string>('MARKETSTACK_API_KEY');
+    const randomSymbol = this.getRandomSymbol();
+    const { startDate, endDate } = this.getRandomDateRange();
+    const url = `http://api.marketstack.com/v1/eod?access_key=${apiKey}&symbols=${randomSymbol}&date_from=${startDate}&date_to=${endDate}`;
 
+    const snapshot = this.httpService.get(url).pipe(
+      map(response => response.data)
+    );
+    console.log(snapshot)
+
+    // format snapshot into stockInput
+    // const stockInput: StockInput = {
+    //   symbol: randomSymbol,
+    //   name: randomSymbol,
+    //   prices: snapshot.data.map((item: any) => {,
+    //   dateGenerated: new Date(),
+    // };
+    // console.log(stockInput)
+    // this.saveSnapshot(stockInput);
   }
 
 
-  async saveSnapshot() {
-
-  }
-
-
-
-  async createStock(data: StockInput) {
+  async saveSnapshot(data: StockInput) {
     return this.prisma.stockSnapshot.create({
       data: {
         symbol: data.symbol,
@@ -89,23 +101,11 @@ export class StockService {
     });
   }
 
-  getRandomStockPrices(): Observable<any> {
-    const apiKey = this.configService.get<string>('MARKETSTACK_API_KEY');
-    const randomSymbol = this.getRandomSymbol();
-    const { startDate, endDate } = this.getRandomDateRange();
-    const url = `http://api.marketstack.com/v1/eod?access_key=${apiKey}&symbols=${randomSymbol}&date_from=${startDate}&date_to=${endDate}`;
-
-    return this.httpService.get(url).pipe(
-      map(response => response.data)
-    );
-  }
-
   private getRandomSymbol(): string {
     const r1 = Math.floor(Math.random() * this.tickers.length);
     const r2 = Math.floor(Math.random() * this.tickers[r1].length);
     return this.tickers[r1][r2];
   }
-
   private getRandomDateRange(): { startDate: string; endDate: string } {
     const endDate = new Date();
     const startDate = new Date(endDate);
