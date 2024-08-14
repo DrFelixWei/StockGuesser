@@ -1,28 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Container, Box, Typography } from '@mui/material';
 
 const StockData = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [stockData, setStockData] = useState(null);
+  const [snapshotLoading, setSnapshotLoading] = useState(false);
 
-  const fetchData = async () => {
-    setLoading(true);
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/stock/random`);
+  const fetchSnapshot = async () => {
+    setSnapshotLoading(true);
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/stock/getRandom`);
     const result = await response.json();
-    setData(result);
-    setLoading(false);
+    setStockData(result);
+    setSnapshotLoading(false);
   };
 
+  // serves as componentDidMount
+  useEffect(() => {
+    fetchSnapshot()
+  }, []);
+
+  useEffect(() => {
+    console.log('stockData:', stockData);
+  }, [stockData]);
+
+
   return (
-    <div>
-      <button onClick={fetchData}>Fetch Random Stock Data</button>
-      {loading && <p>Loading...</p>}
-      {data && (
-        <div>
-          <h3>Random Stock Data</h3>
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-        </div>
+    <>
+      {snapshotLoading && <Typography variant='h3'>fetching stock data...</Typography>}
+      {stockData && (
+        <Box>
+          <Typography variant='h3'>{stockData?.name}</Typography>
+          <pre>{JSON.stringify(stockData, null, 2)}</pre>
+        </Box>
       )}
-    </div>
+    </>
   );
 };
 
