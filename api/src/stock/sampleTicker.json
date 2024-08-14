@@ -1,0 +1,17 @@
+{
+    "name": "Bristol-Myers Squibb Company",
+    "symbol": "BMY",
+    "has_intraday": false,
+    "has_eod": true,
+    "country": null,
+    "stock_exchange": {
+      "name": "New York Stock Exchange",
+      "acronym": "NYSE",
+      "mic": "XNYS",
+      "country": "USA",
+      "country_code": "US",
+      "city": "New York",
+      "website": "http://www.nyse.com"
+    }
+  }
+  

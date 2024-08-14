@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { StockInput } from './stock.input'; 
@@ -17,6 +17,9 @@ import {
   tickersTelecommunications, 
   tickersMaterials, 
 } from './tickers';
+import samplePrices from './samplePrices.json'; 
+import sampleTicker from './sampleTicker.json'; 
+
 
 @Injectable()
 export class StockService {
@@ -63,32 +66,36 @@ export class StockService {
     }).then(result => result[0]); // result is an array, get the first element
   }
   
-  async generateSnapshot(symbol: string, date: Date) {
-
+  async generateSnapshot(symbol: string, startDate: Date) {
+    const formattedStartDate = this.formatDate(startDate);
+    const endDate = new Date(startDate);
+    endDate.setMonth(startDate.getMonth() + 1)
+    const formattedEndDate = this.formatDate(endDate);
+    const snapshot = await this.marketStackPrices(symbol, formattedStartDate, formattedEndDate);
   }
 
   async generateRandomSnapshot() {
-    const apiKey = this.configService.get<string>('MARKETSTACK_API_KEY');
-    const randomSymbol = this.getRandomSymbol();
-    const { startDate, endDate } = this.getRandomDateRange();
-    const url = `http://api.marketstack.com/v1/eod?access_key=${apiKey}&symbols=${randomSymbol}&date_from=${startDate}&date_to=${endDate}`;
 
-    const snapshot = this.httpService.get(url).pipe(
-      map(response => response.data)
-    );
-    console.log(snapshot)
+    const randomSymbol = this.getRandomSymbol();
+    // const tickerData = await this.marketStackInfo(randomSymbol);
+    const tickerData = sampleTicker; // Use sample data for now
+
+    const { startDate, endDate } = this.getRandomDateRange();
+    // const pricesResponse = await this.marketStackPrices(randomSymbol, startDate, endDate);
+    // const pricesResult = pricesResponse?.data;
+    const pricesResult = samplePrices.data; // Use sample data for now
+    const prices = pricesResult.map(day => day.close);
 
     // format snapshot into stockInput
-    // const stockInput: StockInput = {
-    //   symbol: randomSymbol,
-    //   name: randomSymbol,
-    //   prices: snapshot.data.map((item: any) => {,
-    //   dateGenerated: new Date(),
-    // };
-    // console.log(stockInput)
-    // this.saveSnapshot(stockInput);
+    const stockInput: StockInput = {
+      symbol: randomSymbol,
+      name: tickerData.name,
+      prices: prices,
+      dateGenerated: new Date(),
+    };
+    const savedSnapshot = await this.saveSnapshot(stockInput);
+    console.log(savedSnapshot)
   }
-
 
   async saveSnapshot(data: StockInput) {
     return this.prisma.stockSnapshot.create({
@@ -101,15 +108,50 @@ export class StockService {
     });
   }
 
+  async marketStackInfo(symbol: string) {
+    const apiKey = this.configService.get<string>('MARKETSTACK_API_KEY');
+    const url = `http://api.marketstack.com/v1/tickers/${symbol}?access_key=${apiKey}`;
+    try {
+      const data$ = this.httpService.get(url).pipe(
+        map(response => response.data)
+      );
+      const data = await lastValueFrom(data$);
+      console.log("Ticker data: ", data)
+      return data; 
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  async marketStackPrices(randomSymbol: string, startDate: string, endDate: string) {
+    const apiKey = this.configService.get<string>('MARKETSTACK_API_KEY');
+    const url = `http://api.marketstack.com/v1/eod?access_key=${apiKey}&symbols=${randomSymbol}&date_from=${startDate}&date_to=${endDate}`;
+    try {
+      const snapshot$ = this.httpService.get(url).pipe(
+        map(response => response.data)
+      );
+      const snapshot = await lastValueFrom(snapshot$);
+      return snapshot; 
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   private getRandomSymbol(): string {
     const r1 = Math.floor(Math.random() * this.tickers.length);
     const r2 = Math.floor(Math.random() * this.tickers[r1].length);
     return this.tickers[r1][r2];
   }
+
   private getRandomDateRange(): { startDate: string; endDate: string } {
-    const endDate = new Date();
-    const startDate = new Date(endDate);
-    startDate.setMonth(startDate.getMonth() - 1); // 1 month before the endDate
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(today.getDate() - 40); // 40 days before today
+    // Ensure startDate is not within 40 days of today
+    const startDate = new Date(minDate.getTime() + Math.random() * (today.getTime() - minDate.getTime()));
+    // Ensure endDate is within 1 month after startDate
+    const endDate = new Date(startDate);
+    endDate.setMonth(startDate.getMonth() + 1); // 1 month after startDate
     return {
       startDate: this.formatDate(startDate),
       endDate: this.formatDate(endDate)

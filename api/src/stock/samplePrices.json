@@ -1,0 +1,44 @@
+{
+  "pagination": {
+    "limit": 100,
+    "offset": 0,
+    "count": 22,
+    "total": 22
+  },
+  "data": [
+    {
+      "open": 38.9,
+      "high": 39.259,
+      "low": 38.68,
+      "close": 39.12,
+      "volume": 14022583,
+      "adj_high": 39.259,
+      "adj_low": 38.68,
+      "adj_close": 39.12,
+      "adj_open": 38.9,
+      "adj_volume": 14022583,
+      "split_factor": 1,
+      "dividend": 0,
+      "symbol": "CMCSA",
+      "exchange": "XNAS",
+      "date": "2024-08-13T00:00:00+0000"
+    },
+    {
+      "open": 39,
+      "high": 39.1,
+      "low": 38.47,
+      "close": 38.53,
+      "volume": 12209362,
+      "adj_high": 39.1,
+      "adj_low": 38.47,
+      "adj_close": 38.53,
+      "adj_open": 39,
+      "adj_volume": 12209362,
+      "split_factor": 1,
+      "dividend": 0,
+      "symbol": "CMCSA",
+      "exchange": "XNAS",
+      "date": "2024-08-12T00:00:00+0000"
+    }
+  ]
+}
