@@ -24,6 +24,12 @@ const StockData = () => {
   }, [stockData]);
 
   const options = {
+    chart: {
+      zoomType: null, // Disable zooming
+      zooming: {
+        mouseWheel: false,
+      }
+    },
     title: {
       text: stockData?.name,
     },
@@ -38,6 +44,8 @@ const StockData = () => {
           price.low,
           price.close,
         ]) || [],
+        color: 'red',      // Color for negative candles
+        upColor: 'green',  // Color for positive candles
       },
     ],
     xAxis: {
@@ -45,12 +53,27 @@ const StockData = () => {
       title: {
         text: 'Date',
       },
+      scrollbar : {
+        enabled: false
+      },
+      // minPadding: 0.05,  
+      // maxPadding: 0.05, 
+      // min: xAxis.min + 0.2,
+      // max: xAxis.max - 0.2,
     },
     yAxis: {
       title: {
         text: 'Price',
       },
+      opposite: false,
     },
+    rangeSelector: {
+      enabled: false, // Disable the range selector (zoom options)
+    },
+    navigator: {
+      enabled: false, // Optionally disable the navigator (mini chart at the bottom)
+    },
+    
   };
 
   return (
