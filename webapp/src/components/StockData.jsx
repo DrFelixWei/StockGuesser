@@ -48,9 +48,11 @@ const StockData = () => {
         upColor: 'green',  // Color for positive candles
       },
     ],
+    scrollbar: { enabled: false },
     xAxis: {
       type: 'datetime',
       title: {
+        enabled: false,
         text: 'Date',
       },
       scrollbar : {
@@ -58,12 +60,10 @@ const StockData = () => {
       },
       // minPadding: 0.05,  
       // maxPadding: 0.05, 
-      // min: xAxis.min + 0.2,
-      // max: xAxis.max - 0.2,
     },
     yAxis: {
       title: {
-        text: 'Price',
+        text: 'Price (USD)',
       },
       opposite: false,
     },
