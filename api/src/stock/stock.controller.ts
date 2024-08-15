@@ -5,19 +5,14 @@ import { StockService } from './stock.service';
 export class StockController {
   constructor(private readonly stockService: StockService) {}
 
-  @Get('get')
-  async getSnapshot(@Body() id: number) {
-    return this.stockService.getSnapshot(id);
-  }
-
   @Get('getRandom')
   async getRandomSnapshot() {
     return this.stockService.getRandomSnapshot();
   }
-
-  @Post('generate')
-  async generateSnapshot(@Body() symbol: string, date: Date) {
-    return this.stockService.generateSnapshot(symbol, date);
+  
+  @Get('getSpecific')
+  async getSnapshot(@Body() id: number) {
+    return this.stockService.getSnapshot(id);
   }
 
   @Post('generateRandom')
@@ -25,4 +20,8 @@ export class StockController {
     return this.stockService.generateRandomSnapshot();
   }
 
+  @Post('generateSpecific')
+  async generateSnapshot(@Body() symbol: string, date: Date) {
+    return this.stockService.generateSnapshot(symbol, date);
+  }
 }

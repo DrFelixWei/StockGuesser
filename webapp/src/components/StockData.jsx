@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
+import Highcharts from 'highcharts/highstock';
+import HighchartsReact from 'highcharts-react-official';
 
 const StockData = () => {
   const [stockData, setStockData] = useState(null);
@@ -13,23 +15,52 @@ const StockData = () => {
     setSnapshotLoading(false);
   };
 
-  // serves as componentDidMount
   useEffect(() => {
-    fetchSnapshot()
+    fetchSnapshot();
   }, []);
 
   useEffect(() => {
     console.log('stockData:', stockData);
   }, [stockData]);
 
+  const options = {
+    title: {
+      text: stockData?.name,
+    },
+    series: [
+      {
+        type: 'candlestick',
+        name: 'Stock Price',
+        data: stockData?.prices?.map(price => [
+          new Date(price.date).getTime(), // Convert date to timestamp
+          price.open,
+          price.high,
+          price.low,
+          price.close,
+        ]) || [],
+      },
+    ],
+    xAxis: {
+      type: 'datetime',
+      title: {
+        text: 'Date',
+      },
+    },
+    yAxis: {
+      title: {
+        text: 'Price',
+      },
+    },
+  };
 
   return (
     <>
-      {snapshotLoading && <Typography variant='h3'>fetching stock data...</Typography>}
+      {snapshotLoading && <CircularProgress />}
       {stockData && (
         <Box>
           <Typography variant='h3'>{stockData?.name}</Typography>
-          <pre>{JSON.stringify(stockData, null, 2)}</pre>
+          {/* <Typography variant='body1'>{JSON.stringify(stockData?.prices, null, 2)}</Typography> */}
+          <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={options} />
         </Box>
       )}
     </>

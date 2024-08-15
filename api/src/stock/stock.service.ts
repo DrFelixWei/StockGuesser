@@ -83,10 +83,15 @@ export class StockService {
     const { startDate, endDate } = this.getRandomDateRange();
     // const pricesResponse = await this.marketStackPrices(randomSymbol, startDate, endDate);
     // const pricesResult = pricesResponse?.data;
-    const pricesResult = samplePrices.data; // Use sample data for now
-    const prices = pricesResult.map(day => day.close);
+    const pricesResult = samplePrices; // Use sample data for now
+    const prices = pricesResult.map(day => ({
+      date: day.date,
+      open: day.open,
+      close: day.close,
+      low: day.low,
+      high: day.high,
+    }));
 
-    // format snapshot into stockInput
     const stockInput: StockInput = {
       symbol: randomSymbol,
       name: tickerData.name,
@@ -94,7 +99,6 @@ export class StockService {
       dateGenerated: new Date(),
     };
     const savedSnapshot = await this.saveSnapshot(stockInput);
-    console.log(savedSnapshot)
   }
 
   async saveSnapshot(data: StockInput) {
@@ -116,7 +120,6 @@ export class StockService {
         map(response => response.data)
       );
       const data = await lastValueFrom(data$);
-      console.log("Ticker data: ", data)
       return data; 
     } catch (error) {
       console.error('Error:', error);
