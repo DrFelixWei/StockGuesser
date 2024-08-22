@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, CssBaseline, Box, Typography, useMediaQuery } from '@mui/material';
 import { styled, useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
 import StockData from './components/StockData';
@@ -57,7 +57,17 @@ const Title = styled(Typography)(({ theme }) => ({
 }));
 
 function App() {
+
+
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+
+  const maxPoints = 1000
+  const [points, setPoints] = useState(maxPoints);
+
+  const calculatePoints = () => { 
+    
+  }
 
   return (
     <ThemeProvider theme={theme}>

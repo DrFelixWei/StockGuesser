@@ -79,17 +79,30 @@ const StockData = () => {
       {
         type: 'candlestick',
         name: 'Stock Price',
-        data: stockData?.prices?.map(price => [
-          new Date(price.date).getTime(),
-          price.open,
-          price.high,
-          price.low,
-          price.close,
-        ]) || [],
+        data: [
+          [new Date(stockData?.prices[0].date).getTime() - 86400000, null, null, null, null], // Extra empty point before the first data point
+          ...stockData?.prices?.map(price => [
+            new Date(price.date).getTime(),
+            price.open,
+            price.high,
+            price.low,
+            price.close,
+          ]) || [],
+          [new Date(stockData?.prices[stockData?.prices?.length - 1].date).getTime() + 86400000, null, null, null, null], // Extra empty point after the last data point
+        ],
         color: 'red',      
         upColor: 'green', 
+        dataGrouping: {
+          enabled: false, // Disable data grouping to maintain the original spacing
+        },
       },
     ],
+    plotOptions: {
+      candlestick: {
+        pointPadding: 0.02,
+        groupPadding: 0.02,
+      },
+    },
     scrollbar: { enabled: false },
     xAxis: {
       type: 'datetime',
@@ -146,8 +159,8 @@ const StockData = () => {
       {stockData && (
         <Box>
           <Stack direction='row' spacing={2} justifyContent="center" alignItems="center" sx={{width:'100%'}}>
-            <Button onClick={unlockHistory(14)} disabled={buttonStates.clicked14 || buttonStates.clicked28}>2 weeks (500)</Button>
-            <Button onClick={unlockHistory(28)}  disabled={buttonStates.clicked28}>4 weeks (1000)</Button>
+            <Button onClick={unlockHistory(14)} disabled={buttonStates.clicked14 || buttonStates.clicked28}>2 weeks (100 points)</Button>
+            <Button onClick={unlockHistory(28)}  disabled={buttonStates.clicked28}>4 weeks (300 points)</Button>
           </Stack>
 
           {/* <Typography variant='h3'>{stockData?.name}</Typography> */}
