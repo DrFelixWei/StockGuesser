@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, Stack, Button, CircularProgress, Typography } from '@mui/material';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 
 const StockData = () => {
+  const [stockDataFull, setStockDataFull] = useState(null);
   const [stockData, setStockData] = useState(null);
   const [snapshotLoading, setSnapshotLoading] = useState(false);
 
@@ -13,7 +14,7 @@ const StockData = () => {
     setSnapshotLoading(true);
     const response = await fetch(`${import.meta.env.VITE_API_URL}/stock/getRandom`);
     const result = await response.json();
-    setStockData(result);
+    setStockDataFull(result);
     setSnapshotLoading(false);
   };
 
@@ -22,18 +23,42 @@ const StockData = () => {
   }, []);
 
   useEffect(() => {
-    console.log('stockData:', stockData);
-    if (!stockData) return;
-    const lastDate = new Date(stockData.prices[stockData?.prices?.length - 1].date);
+    if (!stockDataFull) return;
+
+    const lastDate = new Date(stockDataFull.prices[stockDataFull?.prices?.length - 1].date);
     lastDate.setDate(lastDate.getDate() + 1); 
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     setSnapshotDate(lastDate.toLocaleDateString('en-US', options));
-  }, [stockData]);
+
+    const trimmedStockData = {
+      ...stockDataFull,
+      prices: stockDataFull.prices.slice(-5) // Get the last 5 elements
+    };
+    setStockData(trimmedStockData);
+
+  }, [stockDataFull]);
+
+  const [buttonStates, setButtonStates] = useState({
+    clicked14: false,
+    clicked28: false,
+  });
+  const unlockHistory = (days) => async () => {
+    const trimmedStockData = {
+      ...stockDataFull,
+      prices: stockDataFull.prices.slice(-days) 
+    };
+    setStockData(trimmedStockData);
+
+    setButtonStates((prevState) => ({
+      ...prevState,
+      clicked14: days === 14 ? true : prevState.clicked14,
+      clicked28: days === 28 ? true : prevState.clicked28,
+    }));
+  }
 
   const backgroundColor = '#1e1e1e'
   const foregroundColor = '#ffffff'
   const backgroundColor2 = '#444444'
-
   const options = {
     chart: {
       zoomType: null, 
@@ -120,6 +145,11 @@ const StockData = () => {
       {snapshotLoading && <CircularProgress />}
       {stockData && (
         <Box>
+          <Stack direction='row' spacing={2} justifyContent="center" alignItems="center" sx={{width:'100%'}}>
+            <Button onClick={unlockHistory(14)} disabled={buttonStates.clicked14 || buttonStates.clicked28}>2 weeks (500)</Button>
+            <Button onClick={unlockHistory(28)}  disabled={buttonStates.clicked28}>4 weeks (1000)</Button>
+          </Stack>
+
           {/* <Typography variant='h3'>{stockData?.name}</Typography> */}
           {/* <Typography variant='body1'>{JSON.stringify(stockData?.prices, null, 2)}</Typography> */}
           <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={options} />
