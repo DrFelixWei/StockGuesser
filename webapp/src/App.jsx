@@ -43,7 +43,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   padding: theme.spacing(3),
-  backgroundColor: 'white',
+  backgroundColor: '#444444',
   boxShadow: theme.shadows[5],
   borderRadius: theme.shape.borderRadius,
   width: '100%',

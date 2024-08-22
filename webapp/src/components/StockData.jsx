@@ -30,17 +30,25 @@ const StockData = () => {
     setSnapshotDate(lastDate.toLocaleDateString('en-US', options));
   }, [stockData]);
 
+  const backgroundColor = '#1e1e1e'
+  const foregroundColor = '#ffffff'
+  const backgroundColor2 = '#444444'
+
   const options = {
     chart: {
-      zoomType: null, // Disable zooming
+      zoomType: null, 
       zooming: {
         mouseWheel: false,
       },
       height: 300,
       width: 500,
+      backgroundColor: backgroundColor, 
     },
     title: {
       text: `${stockData?.name} ${snapShotDate}`,
+      style: {
+        color: foregroundColor, 
+      },
     },
     series: [
       {
@@ -71,15 +79,33 @@ const StockData = () => {
       scrollbar : {
         enabled: false
       },
+      labels: {
+        style: {
+          color: foregroundColor
+        },
+      },
+      lineColor: foregroundColor,
+      tickColor: foregroundColor,
       minPadding: 0.05,
       maxPadding: 0.05, 
     },
     yAxis: {
       title: {
         text: 'Price (USD)',
+        style: {
+          color: foregroundColor
+        },
       },
       opposite: false,
       tickAmount: 5, 
+      labels: {
+        style: {
+          color: foregroundColor
+        },
+      },
+      gridLineColor: backgroundColor2,
+      lineColor: foregroundColor,
+      tickColor: foregroundColor,
     },
     rangeSelector: {
       enabled: false, // Disable the range selector (zoom options)
@@ -87,7 +113,6 @@ const StockData = () => {
     navigator: {
       enabled: false, // Optionally disable the navigator (mini chart at the bottom)
     },
-    
   };
 
   return (
