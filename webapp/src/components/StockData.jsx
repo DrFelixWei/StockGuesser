@@ -7,6 +7,8 @@ const StockData = () => {
   const [stockData, setStockData] = useState(null);
   const [snapshotLoading, setSnapshotLoading] = useState(false);
 
+  const [snapShotDate, setSnapshotDate] = useState(null);
+
   const fetchSnapshot = async () => {
     setSnapshotLoading(true);
     const response = await fetch(`${import.meta.env.VITE_API_URL}/stock/getRandom`);
@@ -21,6 +23,11 @@ const StockData = () => {
 
   useEffect(() => {
     console.log('stockData:', stockData);
+    if (!stockData) return;
+    const lastDate = new Date(stockData.prices[stockData?.prices?.length - 1].date);
+    lastDate.setDate(lastDate.getDate() + 1); 
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    setSnapshotDate(lastDate.toLocaleDateString('en-US', options));
   }, [stockData]);
 
   const options = {
@@ -28,24 +35,26 @@ const StockData = () => {
       zoomType: null, // Disable zooming
       zooming: {
         mouseWheel: false,
-      }
+      },
+      height: 300,
+      width: 500,
     },
     title: {
-      text: stockData?.name,
+      text: `${stockData?.name} ${snapShotDate}`,
     },
     series: [
       {
         type: 'candlestick',
         name: 'Stock Price',
         data: stockData?.prices?.map(price => [
-          new Date(price.date).getTime(), // Convert date to timestamp
+          new Date(price.date).getTime(),
           price.open,
           price.high,
           price.low,
           price.close,
         ]) || [],
-        color: 'red',      // Color for negative candles
-        upColor: 'green',  // Color for positive candles
+        color: 'red',      
+        upColor: 'green', 
       },
     ],
     scrollbar: { enabled: false },
@@ -55,17 +64,22 @@ const StockData = () => {
         enabled: false,
         text: 'Date',
       },
+      tickPositions: [
+        stockData?.prices?.length > 0 && new Date(stockData?.prices[0].date).getTime(),
+        stockData?.prices?.length > 0 && new Date(stockData?.prices[stockData?.prices?.length - 1].date).getTime(), 
+      ],
       scrollbar : {
         enabled: false
       },
-      // minPadding: 0.05,  
-      // maxPadding: 0.05, 
+      minPadding: 0.05,
+      maxPadding: 0.05, 
     },
     yAxis: {
       title: {
         text: 'Price (USD)',
       },
       opposite: false,
+      tickAmount: 5, 
     },
     rangeSelector: {
       enabled: false, // Disable the range selector (zoom options)
@@ -81,7 +95,7 @@ const StockData = () => {
       {snapshotLoading && <CircularProgress />}
       {stockData && (
         <Box>
-          <Typography variant='h3'>{stockData?.name}</Typography>
+          {/* <Typography variant='h3'>{stockData?.name}</Typography> */}
           {/* <Typography variant='body1'>{JSON.stringify(stockData?.prices, null, 2)}</Typography> */}
           <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={options} />
         </Box>
