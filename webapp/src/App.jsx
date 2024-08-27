@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, CssBaseline, Box, Typography, useMediaQuery } from '@mui/material';
 import { styled, useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
+import Navbar from './components/Navbar';
 import StockData from './components/StockData';
 import UserInput from './components/UserInput';
 import './App.css';
@@ -8,7 +9,7 @@ import './App.css';
 const theme = createTheme({
   palette: {
     background: {
-      default: '#000000',
+      default: '#0c2830',
     },
     text: {
       primary: '#F5F5F5',
@@ -50,11 +51,6 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-const Title = styled(Typography)(({ theme }) => ({
-  margin: theme.spacing(3),
-  textAlign: 'center',
-  color: theme.palette.text.primary,
-}));
 
 function App() {
 
@@ -75,10 +71,11 @@ function App() {
       <Root>
         <VerticalLine style={{ left: 0 }} />
         <VerticalLine style={{ right: 0 }} />
+        
         <Box display="flex" flexDirection="column" alignItems="center" width="100%">
-          <Title variant="h1" component="h1" style={{ fontSize: isSmallScreen ? '2rem' : '3rem' }}>
-            Stock Guesser
-          </Title>
+          
+          <Navbar isSmallScreen={isSmallScreen}/>
+
 
           <StyledContainer>
             <StockData />
