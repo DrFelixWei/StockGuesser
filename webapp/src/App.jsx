@@ -4,7 +4,7 @@ import { styled, useTheme, ThemeProvider, createTheme } from '@mui/material/styl
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Admin from './pages/Admin'; 
-import Main from './pages/Main'; 
+import Landing from './pages/Landing'; 
 import './App.css';
 
 const theme = createTheme({
@@ -56,7 +56,7 @@ function App() {
             <Navbar isSmallScreen={isSmallScreen} />
 
             <Routes>
-              <Route path="/" element={<Main/>}/>
+              <Route path="/" element={<Landing/>}/>
               <Route path="/admin1111" element={<Admin />} />
             </Routes>
 

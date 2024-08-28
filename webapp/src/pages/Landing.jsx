@@ -18,7 +18,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     color: theme.palette.text.primary,
   }));
 
-const Main = () => {
+const Landing = () => {
   
     return (
         <Box>
@@ -31,7 +31,7 @@ const Main = () => {
     );
 };
 
-export default Main;
+export default Landing;
 
 
 
