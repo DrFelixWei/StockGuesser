@@ -3,9 +3,8 @@ import { Container, CssBaseline, Box, Typography, useMediaQuery } from '@mui/mat
 import { styled, useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import StockData from './components/StockData';
-import UserInput from './components/UserInput';
 import Admin from './pages/Admin'; 
+import Main from './pages/Main'; 
 import './App.css';
 
 const theme = createTheme({
@@ -39,19 +38,7 @@ const VerticalLine = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.text.primary,
 }));
 
-const StyledContainer = styled(Container)(({ theme }) => ({
-  flexGrow: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: theme.spacing(3),
-  backgroundColor: '#444444',
-  boxShadow: theme.shadows[5],
-  borderRadius: theme.shape.borderRadius,
-  width: '100%',
-  color: theme.palette.text.primary,
-}));
+
 
 function App() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -69,19 +56,10 @@ function App() {
             <Navbar isSmallScreen={isSmallScreen} />
 
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <>
-                    <StyledContainer>
-                      <StockData />
-                    </StyledContainer>
-                    <UserInput />
-                  </>
-                }
-              />
+              <Route path="/" element={<Main/>}/>
               <Route path="/admin1111" element={<Admin />} />
             </Routes>
+
           </Box>
         </Root>
       </Router>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
-import StockData from '../components/GenerateStock';
 import GenerateStock from '../components/GenerateStock';
 
 const Admin = () => {

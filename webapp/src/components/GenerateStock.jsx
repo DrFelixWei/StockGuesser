@@ -21,6 +21,10 @@ const GenerateStock = () => {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
 
+      if (response === null) {
+        throw new Error("NULL RESPONSE FROM MARKETSTACK API")
+      }
+
       const result = await response.json();
       setData(result);
     } catch (err) {

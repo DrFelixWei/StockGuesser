@@ -99,6 +99,7 @@ export class StockService {
     const { startDate, endDate } = this.getRandomDateRange();
     const pricesResponse = await this.marketStackPrices(randomSymbol, startDate, endDate);
     const pricesResult = pricesResponse?.data;
+    if (pricesResult?.length === 0) { return null; }
     // const pricesResult = samplePrices; // Use sample data for now
     const prices = pricesResult.map(day => ({
       date: day.date,
@@ -165,13 +166,17 @@ export class StockService {
 
   private getRandomDateRange(): { startDate: string; endDate: string } {
     const today = new Date();
-    const minDate = new Date(today);
-    minDate.setDate(today.getDate() - 40); // 40 days before today
-    // Ensure startDate is not within 40 days of today
-    const startDate = new Date(minDate.getTime() + Math.random() * (today.getTime() - minDate.getTime()));
-    // Ensure endDate is within 1 month after startDate
+
+    const oneYearAgo = new Date(today); // MARKETSTACK API LIMITS TO 1 YEAR AGO HISTORICAL DATA
+    oneYearAgo.setFullYear(today.getFullYear() - 1);
+
+    const minEndDate = new Date(today); // LIMITING RANGE OF POSSIBLE DATES TO NOT BE WITHIN 40 DAYS OF TODAY
+    minEndDate.setDate(today.getDate() - 40); 
+
+    const startDate = new Date(oneYearAgo.getTime() + Math.random() * (minEndDate.getTime() - oneYearAgo.getTime()));
     const endDate = new Date(startDate);
-    endDate.setMonth(startDate.getMonth() + 1); // 1 month after startDate
+    endDate.setDate(startDate.getDate() + 30);
+
     return {
       startDate: this.formatDate(startDate),
       endDate: this.formatDate(endDate)

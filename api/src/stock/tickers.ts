@@ -5,7 +5,7 @@ export const tickersTech = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX
 export const tickersHealthcare = ['JNJ', 'PFE', 'MRK', 'ABT', 'GILD', 'BMY', 'LLY', 'AMGN', 'MDT', 'SYK'];
 
 // Financial sector
-export const tickersFinancial = ['JPM', 'BAC', 'WFC', 'C', 'GS', 'MS', 'AXP', 'BK', 'BLK', 'TFC'];
+export const tickersFinancial = ['JPM', 'BAC', 'WFC', 'C', 'GS', 'MS', 'AXP', 'BK', 'BLK', 'TD'];
 
 // Consumer Discretionary sector
 export const tickersConsumerDiscretionary = ['DIS', 'HD', 'NKE', 'SBUX', 'MCD', 'LOW', 'TGT', 'TJX', 'ROST', 'DG'];
