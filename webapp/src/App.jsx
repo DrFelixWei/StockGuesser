@@ -42,8 +42,6 @@ const VerticalLine = styled(Box)(({ theme }) => ({
 
 function App() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const maxPoints = 1000;
-  const [points, setPoints] = useState(maxPoints);
 
   return (
     <ThemeProvider theme={theme}>

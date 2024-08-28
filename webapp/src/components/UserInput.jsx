@@ -38,7 +38,9 @@ const VerticalSlider = styled(Slider)(({ theme, color }) => ({
   },
 }));
 
-const UserInput = () => {
+const UserInput = ({
+  submitGuess,
+}) => {
   const [value, setValue] = useState(0);
 
   const handleSliderChange = (event, newValue) => {
@@ -54,8 +56,7 @@ const UserInput = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Submitted value:', value);
-    // You can replace this console.log with any function to handle the submitted value
+    submitGuess(value);
   };
 
   // Calculate color based on slider value

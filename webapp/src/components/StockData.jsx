@@ -3,11 +3,13 @@ import { Box, Stack, Button, CircularProgress, Typography } from '@mui/material'
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 
-const StockData = () => {
+const StockData = ({
+  updateScoreFromUnlockHistory,
+  setAnswer,
+}) => {
   const [stockDataFull, setStockDataFull] = useState(null);
   const [stockData, setStockData] = useState(null);
   const [snapshotLoading, setSnapshotLoading] = useState(false);
-
   const [snapShotDate, setSnapshotDate] = useState(null);
 
   const fetchSnapshot = async () => {
@@ -32,9 +34,13 @@ const StockData = () => {
 
     const trimmedStockData = {
       ...stockDataFull,
-      prices: stockDataFull.prices.slice(-5) // Get the last 5 elements
+      prices: stockDataFull.prices.slice(0, 5) 
     };
     setStockData(trimmedStockData);
+
+    const percentageChange = ((stockDataFull?.prices[0]?.open - stockDataFull?.prices[0]?.close) / stockDataFull?.prices[0]?.open) * 100;
+    const roundedPercentage = Math.round(percentageChange * 100) / 100;
+    setAnswer(roundedPercentage);
 
   }, [stockDataFull]);
 
@@ -54,7 +60,12 @@ const StockData = () => {
       clicked14: days === 14 ? true : prevState.clicked14,
       clicked28: days === 28 ? true : prevState.clicked28,
     }));
+
+    updateScoreFromUnlockHistory(days)
   }
+
+
+
 
   const backgroundColor = '#1e1e1e'
   const foregroundColor = '#ffffff'
