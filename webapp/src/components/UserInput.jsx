@@ -2,45 +2,37 @@ import React, { useState } from 'react';
 import { Slider, Box, TextField, Button } from '@mui/material';
 import { styled } from '@mui/system';
 
-// Function to calculate color based on value
+const maxChange = 10;
+
 const getColorFromValue = (value) => {
-  const normalizedValue = (value + 100) / 200; // Normalize value to range [0, 1]
+  const normalizedValue = (value + maxChange) / (maxChange*2); 
   const red = Math.min(255, Math.max(0, Math.round((1 - normalizedValue) * 255)));
   const green = Math.min(255, Math.max(0, Math.round(normalizedValue * 255)));
   return `rgb(${red}, ${green}, 0)`;
 };
 
-// Custom styled Box for vertical slider
-const VerticalSlider = styled(Slider)(({ theme, color }) => ({
-  height: '150px', // Adjust the height as needed
+// Custom styled Box for horizontal slider
+const HorizontalSlider = styled(Slider)(({ theme, color }) => ({
+  width: '100%', 
   '& .MuiSlider-thumb': {
-    width: 50, // Set width for a wide rectangle
-    height: 20, // Set height for a wide rectangle
+    width: 25, 
+    height: 30, 
     backgroundColor: color,
     border: '2px solid #fff',
-    borderRadius: 4, // Adjust border-radius to make it a rectangle
-    // '&:focus, &:hover': {
-    //   boxShadow: '0px 0px 0px 8px rgba(84, 199, 97, 0.16)'
-    // },
-    // '&$active': {
-    //   boxShadow: '0px 0px 0px 12px rgba(84, 199, 97, 0.16)'
-    // }
+    borderRadius: 4,
   },
   '& .MuiSlider-track': {
-    height: 8,
-    width: 20,
+    height: 20,
     backgroundColor: color,
   },
   '& .MuiSlider-rail': {
-    height: 8,
-    width: 0,
-    backgroundColor: theme.palette.grey[400], // Default rail color
+    height: 20,
+    backgroundColor: theme.palette.grey[400], 
   },
 }));
 
-const UserInput = ({
-  submitGuess,
-}) => {
+
+const UserInput = ({ submitGuess }) => {
   const [value, setValue] = useState(0);
 
   const handleSliderChange = (event, newValue) => {
@@ -49,7 +41,7 @@ const UserInput = ({
 
   const handleInputChange = (event) => {
     const newValue = Number(event.target.value);
-    if (!isNaN(newValue) && newValue >= -100 && newValue <= 100) {
+    if (!isNaN(newValue) && newValue >= -maxChange && newValue <= maxChange) {
       setValue(newValue);
     }
   };
@@ -64,32 +56,31 @@ const UserInput = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <Box sx={{ display: 'flex', alignItems: 'center', height: '200px', justifyContent: 'center' }}>
-        <TextField
-          label="Value"
-          variant="outlined"
-          value={value}
-          onChange={handleInputChange}
-          inputProps={{ min: -100, max: 100, type: 'number' }}
-          sx={{ marginRight: 2, width: '100px' }}
-        />
-        <VerticalSlider
-          orientation="vertical"
-          value={value}
-          onChange={handleSliderChange}
-          min={-100}
-          max={100}
-          aria-labelledby="vertical-slider"
-          color={sliderColor} // Pass the color as a prop
-        />
-
-        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2, marginLeft: 10 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: 'auto', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+          <TextField
+            label="Value"
+            variant="outlined"
+            value={value.toFixed(2)} // Display value with 2 decimal points
+            onChange={handleInputChange}
+            inputProps={{ min: -maxChange, max: maxChange, step: 0.01, type: 'number' }}
+            sx={{ marginRight: 2, width: '100px' }}
+          />
           <Button type="submit" variant="contained" color="primary">
             Submit
           </Button>
         </Box>
-      </Box>
 
+        <HorizontalSlider
+          value={value}
+          onChange={handleSliderChange}
+          min={-maxChange}
+          max={maxChange}
+          step={0.01} // Set step to 0.01 for finer increments
+          aria-labelledby="horizontal-slider"
+          color={sliderColor} // Pass the color as a prop
+        />
+      </Box>
     </form>
   );
 };

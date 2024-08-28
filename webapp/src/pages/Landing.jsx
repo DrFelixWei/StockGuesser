@@ -16,6 +16,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     borderRadius: theme.shape.borderRadius,
     width: '100%',
     color: theme.palette.text.primary,
+    marginBottom: theme.spacing(2),
   }));
 
 const Landing = () => {
