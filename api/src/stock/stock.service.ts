@@ -72,18 +72,34 @@ export class StockService {
     endDate.setMonth(startDate.getMonth() + 1)
     const formattedEndDate = this.formatDate(endDate);
     const snapshot = await this.marketStackPrices(symbol, formattedStartDate, formattedEndDate);
+    
+    // const prices = snapshot.data.map(day => ({
+    //   date: day.date,
+    //   open: day.open,
+    //   close: day.close,
+    //   low: day.low,
+    //   high: day.high,
+    // }));
+    // const stockInput: StockInput = {
+    //   symbol: symbol,
+    //   name: tickerData.name,
+    //   prices: prices,
+    //   dateGenerated: new Date(),
+    // };
+    // const savedSnapshot = await this.saveSnapshot(stockInput);
+    // return savedSnapshot
   }
 
   async generateRandomSnapshot() {
 
     const randomSymbol = this.getRandomSymbol();
-    // const tickerData = await this.marketStackInfo(randomSymbol);
-    const tickerData = sampleTicker; // Use sample data for now
+    const tickerData = await this.marketStackInfo(randomSymbol);
+    // const tickerData = sampleTicker; // Use sample data for now
 
     const { startDate, endDate } = this.getRandomDateRange();
-    // const pricesResponse = await this.marketStackPrices(randomSymbol, startDate, endDate);
-    // const pricesResult = pricesResponse?.data;
-    const pricesResult = samplePrices; // Use sample data for now
+    const pricesResponse = await this.marketStackPrices(randomSymbol, startDate, endDate);
+    const pricesResult = pricesResponse?.data;
+    // const pricesResult = samplePrices; // Use sample data for now
     const prices = pricesResult.map(day => ({
       date: day.date,
       open: day.open,
@@ -99,6 +115,7 @@ export class StockService {
       dateGenerated: new Date(),
     };
     const savedSnapshot = await this.saveSnapshot(stockInput);
+    return savedSnapshot
   }
 
   async saveSnapshot(data: StockInput) {

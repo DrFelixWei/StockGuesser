@@ -72,12 +72,14 @@ const UserInput = () => {
           aria-labelledby="vertical-slider"
           color={sliderColor} // Pass the color as a prop
         />
+
+        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2, marginLeft: 10 }}>
+          <Button type="submit" variant="contained" color="primary">
+            Submit
+          </Button>
+        </Box>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
-        <Button type="submit" variant="contained" color="primary">
-          Submit
-        </Button>
-      </Box>
+
     </form>
   );
 };
