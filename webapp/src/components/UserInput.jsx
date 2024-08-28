@@ -14,17 +14,26 @@ const getColorFromValue = (value) => {
 const VerticalSlider = styled(Slider)(({ theme, color }) => ({
   height: '150px', // Adjust the height as needed
   '& .MuiSlider-thumb': {
-    width: 24,
-    height: 24,
+    width: 50, // Set width for a wide rectangle
+    height: 20, // Set height for a wide rectangle
     backgroundColor: color,
     border: '2px solid #fff',
+    borderRadius: 4, // Adjust border-radius to make it a rectangle
+    // '&:focus, &:hover': {
+    //   boxShadow: '0px 0px 0px 8px rgba(84, 199, 97, 0.16)'
+    // },
+    // '&$active': {
+    //   boxShadow: '0px 0px 0px 12px rgba(84, 199, 97, 0.16)'
+    // }
   },
   '& .MuiSlider-track': {
-    height: 4,
+    height: 8,
+    width: 20,
     backgroundColor: color,
   },
   '& .MuiSlider-rail': {
-    height: 4,
+    height: 8,
+    width: 0,
     backgroundColor: theme.palette.grey[400], // Default rail color
   },
 }));
