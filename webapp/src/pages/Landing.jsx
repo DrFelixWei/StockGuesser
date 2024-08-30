@@ -23,22 +23,38 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 const Landing = () => {
 
     const [answer, setAnswer] = useState(0);
-    useEffect(() => {
-        console.log('Answer:', answer);
-    }, [answer]);
-
     const [guess, setGuess] = useState(0);
     const [score, setScore] = useState(0);
 
     const maxPoints = 1000;
-    const [points, setPoints] = useState(maxPoints);
 
     const updateScoreFromUnlockHistory = (days) => {
-        console.log('Days:', days);
+        switch (days) {
+            case 14:
+                setHintsUsed(prevHintsUsed => [...prevHintsUsed, '14 days']);
+                break;
+            case 28:
+                setHintsUsed(prevHintsUsed => [...prevHintsUsed, '28 days']);
+                break;
+            default:
+                break;
+        }
     };
 
+    const hints = {
+        "14 days" : -100,
+        "28 days" : -300,
+    }
+    const [hintsUsed, setHintsUsed] = useState([]);
+
     const calculateScore = () => {
-        return 1000;
+        let maxScore = maxPoints
+        for (const hint of hintsUsed) {
+            maxScore += hints[hint]
+        }
+        const accuracyFactor = Math.abs(answer - guess) / 100;
+        const finalScore = maxScore * (1 - accuracyFactor); 
+        return finalScore
     };
     
     const [openModal, setOpenModal] = useState(false);
@@ -47,7 +63,6 @@ const Landing = () => {
 
     const stockDataRef = useRef();
     const submitGuess = (value) => {
-        console.log('Submitted value:', value);
         setGuess(value);
         setScore(calculateScore());
         setOpenModal(true);
@@ -72,7 +87,6 @@ const Landing = () => {
                 aria-describedby="modal-description"
             >
                 <Box sx={{
-                    // position: 'absolute',
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',

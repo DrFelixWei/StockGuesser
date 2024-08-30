@@ -35,7 +35,7 @@ const StockData = forwardRef((
 
     const trimmedStockData = {
       ...stockDataFull,
-      prices: stockDataFull.prices.slice(0, 5) 
+      prices: stockDataFull.prices.slice(0, 7) 
     };
     setStockData(trimmedStockData);
 
