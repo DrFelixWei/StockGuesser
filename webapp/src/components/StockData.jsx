@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Box, Stack, Button, CircularProgress, Typography } from '@mui/material';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 
-const StockData = ({
-  updateScoreFromUnlockHistory,
-  setAnswer,
-}) => {
+const StockData = forwardRef((
+  { 
+    updateScoreFromUnlockHistory, 
+    setAnswer 
+  }, ref) => {
   const [stockDataFull, setStockDataFull] = useState(null);
   const [stockData, setStockData] = useState(null);
   const [snapshotLoading, setSnapshotLoading] = useState(false);
@@ -64,6 +65,17 @@ const StockData = ({
     updateScoreFromUnlockHistory(days)
   }
 
+
+  const revealAnswer = () => {
+    setStockData(stockDataFull);
+    setButtonStates({
+      clicked14: true,
+      clicked28: true,
+    });
+  }
+  useImperativeHandle(ref, () => ({
+    revealAnswer,
+  }));
 
 
 
@@ -181,6 +193,6 @@ const StockData = ({
       )}
     </>
   );
-};
+});
 
 export default StockData;

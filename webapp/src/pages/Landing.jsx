@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Typography, Box, Button, Container, CssBaseline,useMediaQuery } from '@mui/material';
 import { styled, useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
 import StockData from '../components/StockData';
@@ -37,15 +37,20 @@ const Landing = () => {
     };
     
     
-
+    const stockDataRef = useRef();
     const submitGuess = (value) => {
         console.log('Submitted value:', value);
+        if (stockDataRef.current) {
+            stockDataRef.current.revealAnswer();
+          }
     };
+
+    
   
     return (
         <Box>
             <StyledContainer>
-                <StockData updateScoreFromUnlockHistory={updateScoreFromUnlockHistory} setAnswer={setAnswer}/>
+                <StockData updateScoreFromUnlockHistory={updateScoreFromUnlockHistory} setAnswer={setAnswer} ref={stockDataRef}/>
             </StyledContainer>
             
             <UserInput submitGuess={submitGuess}/>
