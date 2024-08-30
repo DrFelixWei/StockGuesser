@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Typography, Box, IconButton, Container, CssBaseline, useMediaQuery, Modal } from '@mui/material';
-import { styled, useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
+import { Typography, Box, IconButton, Container, Modal } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import StockData from '../components/StockData';
 import UserInput from '../components/UserInput';
@@ -21,10 +21,10 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 }));
 
 const Landing = () => {
-
     const [answer, setAnswer] = useState(0);
     const [guess, setGuess] = useState(0);
     const [score, setScore] = useState(0);
+    const [scoreHistory, setScoreHistory] = useState([]);
 
     const maxPoints = 1000;
 
@@ -42,30 +42,47 @@ const Landing = () => {
     };
 
     const hints = {
-        "14 days" : -100,
-        "28 days" : -300,
-    }
+        "14 days": -100,
+        "28 days": -300,
+    };
     const [hintsUsed, setHintsUsed] = useState([]);
 
     const calculateScore = () => {
-        let maxScore = maxPoints
+        let maxScore = maxPoints;
         for (const hint of hintsUsed) {
-            maxScore += hints[hint]
+            maxScore += hints[hint];
         }
         const accuracyFactor = Math.abs(answer - guess) / 100;
-        const finalScore = maxScore * (1 - accuracyFactor); 
-        return finalScore
+        const finalScore = maxScore * (1 - accuracyFactor);
+        return finalScore;
     };
-    
+
+    const saveScoreToLocalStorage = (finalScore) => {
+        const today = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
+        const scores = JSON.parse(localStorage.getItem('scores')) || {};
+        scores[today] = finalScore;
+        localStorage.setItem('scores', JSON.stringify(scores));
+    };
+
+    const getScoreHistoryFromLocalStorage = () => {
+        const scores = JSON.parse(localStorage.getItem('scores')) || {};
+        setScoreHistory(scores);
+    };
+
     const [openModal, setOpenModal] = useState(false);
-    const handleOpenModal = () => setOpenModal(true);
+    const handleOpenModal = () => {
+        getScoreHistoryFromLocalStorage();
+        setOpenModal(true);
+    };
     const handleCloseModal = () => setOpenModal(false);
 
     const stockDataRef = useRef();
     const submitGuess = (value) => {
         setGuess(value);
-        setScore(calculateScore());
-        setOpenModal(true);
+        const finalScore = calculateScore();
+        setScore(finalScore);
+        saveScoreToLocalStorage(finalScore);
+        handleOpenModal();
 
         if (stockDataRef.current) {
             stockDataRef.current.revealAnswer();
@@ -115,6 +132,18 @@ const Landing = () => {
                     <Typography id="modal-description" sx={{ mt: 2 }}>
                         Score: {score}
                     </Typography>
+                    <Typography variant="h6" sx={{ mt: 3 }}>
+                        Score History:
+                    </Typography>
+                    {Object.keys(scoreHistory).length > 0 ? (
+                        Object.entries(scoreHistory).map(([date, score], index) => (
+                            <Typography key={index} variant="body1">
+                                {date}: {score}
+                            </Typography>
+                        ))
+                    ) : (
+                        <Typography variant="body1">No score history available.</Typography>
+                    )}
                 </Box>
             </Modal>
         </Box>
