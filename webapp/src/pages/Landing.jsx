@@ -21,6 +21,9 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 }));
 
 const Landing = () => {
+
+
+
     const [answer, setAnswer] = useState(0);
     const [guess, setGuess] = useState(0);
     const [score, setScore] = useState(0);
@@ -89,13 +92,32 @@ const Landing = () => {
         }
     };
 
+    const [guessed, setGuessed] = useState(false);
+    const checkIfGuessedToday = () => {
+        const today = new Date().toISOString().split('T')[0]; 
+        const scores = JSON.parse(localStorage.getItem('scores')) || {};
+        console.log(scores[today])
+        if (scores[today]) {
+            setGuessed(true);
+        } else {
+            setGuessed(false);
+        }
+    };
+    useEffect(() => {
+        checkIfGuessedToday();
+    }, []);
+    useEffect(() => {
+        setOpenModal(guessed);
+    }, [guessed]);
+
+
     return (
         <Box>
             <StyledContainer>
                 <StockData updateScoreFromUnlockHistory={updateScoreFromUnlockHistory} setAnswer={setAnswer} ref={stockDataRef} />
             </StyledContainer>
             
-            <UserInput submitGuess={submitGuess} />
+            <UserInput submitGuess={submitGuess} alreadyGuessed={guessed} />
 
             <Modal
                 open={openModal}

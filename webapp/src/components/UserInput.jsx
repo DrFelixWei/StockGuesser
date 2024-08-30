@@ -32,7 +32,10 @@ const HorizontalSlider = styled(Slider)(({ theme, color }) => ({
 }));
 
 
-const UserInput = ({ submitGuess }) => {
+const UserInput = ({ 
+  submitGuess,
+  alreadyGuessed, 
+}) => {
   const [value, setValue] = useState(0);
 
   const handleSliderChange = (event, newValue) => {
@@ -66,7 +69,7 @@ const UserInput = ({ submitGuess }) => {
             inputProps={{ min: -maxChange, max: maxChange, step: 0.01, type: 'number' }}
             sx={{ marginRight: 2, width: '100px' }}
           />
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="primary" disabled={alreadyGuessed}>
             Submit
           </Button>
         </Box>
