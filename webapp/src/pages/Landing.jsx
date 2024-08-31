@@ -2,6 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Typography, Box, IconButton, Container, Modal } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
+import Navbar from '../components/Navbar';
 import StockData from '../components/StockData';
 import UserInput from '../components/UserInput';
 
@@ -20,8 +24,9 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     marginBottom: theme.spacing(2),
 }));
 
-const Landing = () => {
-
+const Landing = ({ 
+    isSmallScreen 
+}) => {
 
 
     const [answer, setAnswer] = useState(0);
@@ -111,8 +116,38 @@ const Landing = () => {
     }, [guessed]);
 
 
+    const navbarClickOnHelp = () => {
+        console.log('Help clicked');
+    }
+    const navbarClickOnStats = () => {
+        setOpenModal(true);
+    }
+
+
     return (
         <Box>
+            <Navbar 
+                isSmallScreen={isSmallScreen} 
+                clickOnHelp={navbarClickOnHelp}
+                clickOnStats={navbarClickOnStats}
+            />
+
+            <Box width="100%" display="flex" alignItems="center" justifyContent="space-between" padding={2}>
+                <IconButton onClick={()=>{}}>
+                    <ArrowBackIosIcon style={{ backgroundColor: '#e0e0e0'}}/>
+                </IconButton>
+                
+                <Typography variant="h3" component="h3">
+                    Today
+                </Typography>
+                
+                <IconButton onClick={()=>{}}>
+                    <ArrowForwardIosIcon style={{ backgroundColor: '#e0e0e0'}}/>
+
+                </IconButton>
+            </Box>
+
+
             <StyledContainer>
                 <StockData updateScoreFromUnlockHistory={updateScoreFromUnlockHistory} setAnswer={setAnswer} ref={stockDataRef} />
             </StyledContainer>

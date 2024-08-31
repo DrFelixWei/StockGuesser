@@ -9,20 +9,12 @@ const Title = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-const Navbar = ({ isSmallScreen }) => {
-
-  const handleClickOnHelp = () => {
-    
-  };
-
-  const handleClickOnStats = () => {
-    
-  };
+const Navbar = ({ isSmallScreen, clickOnHelp, clickOnStats}) => {
 
   return (
     <Box width="100%" display="flex" alignItems="center" justifyContent="space-between" padding={2}>
       <Tooltip title="Help">
-        <IconButton onClick={handleClickOnHelp}>
+        <IconButton onClick={clickOnHelp}>
           <HelpOutline style={{ backgroundColor: '#e0e0e0', borderRadius: '50%' }} />
         </IconButton>
       </Tooltip>
@@ -32,7 +24,7 @@ const Navbar = ({ isSmallScreen }) => {
       </Title>
       
       <Tooltip title="Statistics">
-        <IconButton onClick={handleClickOnStats}>
+        <IconButton onClick={clickOnStats}>
           <BarChart />
         </IconButton>
       </Tooltip>

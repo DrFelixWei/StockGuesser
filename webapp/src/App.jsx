@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Container, CssBaseline, Box, Typography, useMediaQuery } from '@mui/material';
 import { styled, useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
 import Admin from './pages/Admin'; 
 import Landing from './pages/Landing'; 
 import './App.css';
@@ -51,10 +50,9 @@ function App() {
           <VerticalLine style={{ left: 0 }} />
           <VerticalLine style={{ right: 0 }} />
           <Box display="flex" flexDirection="column" alignItems="center" width="100%">
-            <Navbar isSmallScreen={isSmallScreen} />
 
             <Routes>
-              <Route path="/" element={<Landing/>}/>
+              <Route path="/" element={<Landing isSmallScreen={isSmallScreen}/>}/>
               <Route path="/admin1111" element={<Admin />} />
             </Routes>
 
