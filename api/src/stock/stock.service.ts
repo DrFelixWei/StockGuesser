@@ -65,6 +65,38 @@ export class StockService {
       skip: randomOffset,
     }).then(result => result[0]); // result is an array, get the first element
   }
+
+  async getSnapshotByDate(date: string) {
+    const parsedDate = Date.parse(date); // Attempt to parse the date string
+  
+    if (isNaN(parsedDate)) {
+      throw new Error('Invalid date format');
+    }
+  
+    const startOfDay = new Date(parsedDate); // Start of the day (00:00:00)
+    const endOfDay = new Date(startOfDay);
+    endOfDay.setDate(endOfDay.getDate() + 1); // Next day (00:00:00)
+    const result = await this.prisma.stockSnapshot.findFirst({
+      where: {
+        dateGenerated: {
+          gte: startOfDay,
+          lt: endOfDay,
+        },
+      },
+    });
+
+    if (!result) {
+      // try {
+      //   await this.generateRandomSnapshot();
+      //   return this.getSnapshotByDate(date);
+      // } catch (error) {
+      //   console.error('Error trying to generate new snapshot inside getSnapshotByDate:', error);
+      // }
+      throw new Error('No snapshot found for the given date');
+     
+    }
+    return result;
+  }
   
   async generateSnapshot(symbol: string, startDate: Date) {
     const formattedStartDate = this.formatDate(startDate);

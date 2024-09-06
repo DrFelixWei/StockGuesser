@@ -5,6 +5,7 @@ import HighchartsReact from 'highcharts-react-official'
 
 const StockData = forwardRef((
   { 
+    date,
     updateScoreFromUnlockHistory, 
     setAnswer 
   }, ref) => {
@@ -16,9 +17,15 @@ const StockData = forwardRef((
 
   const fetchSnapshot = async () => {
     setSnapshotLoading(true)
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/stock/getRandom`)
-    const result = await response.json()
-    setStockDataFull(result)
+    // const response = await fetch(`${import.meta.env.VITE_API_URL}/stock/getRandom`)
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/stock/getByDate?date=${encodeURIComponent(date)}`, {
+      method: 'GET',
+    });
+
+    if (response.ok) {
+      const result = await response.json()
+      setStockDataFull(result)
+    }
     setSnapshotLoading(false)
   }
 
@@ -184,6 +191,9 @@ const StockData = forwardRef((
   return (
     <>
       {snapshotLoading && <CircularProgress />}
+
+      {!stockDataFull && !snapshotLoading && <Typography variant='body'>No data available for this date</Typography>}
+
       {stockData && (
         <Box>
           <Stack direction='row' spacing={2} justifyContent="center" alignItems="center" sx={{width:'100%'}}>

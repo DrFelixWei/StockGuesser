@@ -6,11 +6,8 @@ const StatsModal = ({ open, handleCloseModal, scoreHistory}) => {
 
   const stats = {
     "Played" : 0,
-    "Accuracy %" : 0,
-    "Current Streak" : 0,
-    "Max Streak" : 0,
-    "Best Score" : 0,
     "Average Score" : 0,
+    "Best Score" : 0,
   }
 
   const played = 0;

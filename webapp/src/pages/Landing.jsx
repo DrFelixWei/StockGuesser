@@ -35,6 +35,9 @@ const Landing = ({
     const [score, setScore] = useState(0);
     const [scoreHistory, setScoreHistory] = useState([]);
 
+    const today = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
+    const [snapShotDate, setSnapshotDate] = useState(today);
+
     const maxPoints = 1000;
 
     const updateScoreFromUnlockHistory = (days) => {
@@ -67,7 +70,6 @@ const Landing = ({
     };
 
     const saveScoreToLocalStorage = (finalScore) => {
-        const today = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
         const scores = JSON.parse(localStorage.getItem('scores')) || {};
         scores[today] = finalScore;
         localStorage.setItem('scores', JSON.stringify(scores));
@@ -108,9 +110,7 @@ const Landing = ({
 
     const [guessed, setGuessed] = useState(false);
     const checkIfGuessedToday = () => {
-        const today = new Date().toISOString().split('T')[0]; 
         const scores = JSON.parse(localStorage.getItem('scores')) || {};
-        console.log(scores[today])
         if (scores[today]) {
             setGuessed(true);
         } else {
@@ -153,13 +153,17 @@ const Landing = ({
                 
                 <IconButton onClick={()=>{}}>
                     <ArrowForwardIosIcon style={{ backgroundColor: '#e0e0e0'}}/>
-
                 </IconButton>
             </Box>
 
 
             <StyledContainer>
-                <StockData updateScoreFromUnlockHistory={updateScoreFromUnlockHistory} setAnswer={setAnswer} ref={stockDataRef} />
+                <StockData 
+                    ref={stockDataRef} 
+                    date={snapShotDate}
+                    updateScoreFromUnlockHistory={updateScoreFromUnlockHistory} 
+                    setAnswer={setAnswer} 
+                    />
             </StyledContainer>
             
             <UserInput submitGuess={submitGuess} alreadyGuessed={guessed} />

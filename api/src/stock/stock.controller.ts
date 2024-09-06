@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { StockService } from './stock.service';
 
 @Controller('stock')
@@ -13,6 +13,11 @@ export class StockController {
   @Get('getSpecific')
   async getSnapshot(@Body() id: number) {
     return this.stockService.getSnapshot(id);
+  }
+
+  @Get('getByDate')
+  async getSnapshotByDate(@Query('date') date: string) {
+    return this.stockService.getSnapshotByDate(date);
   }
 
   @Post('generateRandom')
