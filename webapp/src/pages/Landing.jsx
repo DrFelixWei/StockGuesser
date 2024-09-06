@@ -38,6 +38,12 @@ const Landing = ({
     const today = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
     const [snapShotDate, setSnapshotDate] = useState(today);
 
+    const changeDate = (days) => {
+        const date = new Date(snapShotDate);
+        date.setDate(date.getDate() + days);
+        setSnapshotDate(date.toISOString().split('T')[0]);
+    }
+
     const maxPoints = 1000;
 
     const updateScoreFromUnlockHistory = (days) => {
@@ -143,15 +149,15 @@ const Landing = ({
             />
 
             <Box width="100%" display="flex" alignItems="center" justifyContent="space-between" padding={2}>
-                <IconButton onClick={()=>{}}>
+                <IconButton onClick={()=>changeDate(-1)}>
                     <ArrowBackIosIcon style={{ backgroundColor: '#e0e0e0'}}/>
                 </IconButton>
                 
                 <Typography variant="h3" component="h3">
-                    Today
+                    { snapShotDate === today ? "Today" : snapShotDate}
                 </Typography>
                 
-                <IconButton onClick={()=>{}}>
+                <IconButton onClick={()=>changeDate(1)} disabled={snapShotDate === today}>
                     <ArrowForwardIosIcon style={{ backgroundColor: '#e0e0e0'}}/>
                 </IconButton>
             </Box>

@@ -30,6 +30,7 @@ const StockData = forwardRef((
   }
 
   useEffect(() => {
+    console.log('fetching snapshot')
     fetchSnapshot()
   }, [])
 
