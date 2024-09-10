@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Typography, Box, IconButton, Container, Modal } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import React, { useState, useEffect, useRef } from 'react'
+import { Typography, Box, IconButton, Container, Modal } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 
-import Navbar from '../components/Navbar';
-import StockData from '../components/StockData';
-import UserInput from '../components/UserInput';
-import StatsModal from '../components/StatsModal';
-import ResultModal from '../components/ResultModal';
-import HelpModal from '../components/HelpModal';
+import Navbar from '../components/Navbar'
+import StockData from '../components/StockData'
+import UserInput from '../components/UserInput'
+import StatsModal from '../components/StatsModal'
+import ResultModal from '../components/ResultModal'
+import HelpModal from '../components/HelpModal'
 
 const StyledContainer = styled(Container)(({ theme }) => ({
     flexGrow: 1,
@@ -24,123 +24,143 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     width: '100%',
     color: theme.palette.text.primary,
     marginBottom: theme.spacing(2),
-}));
+}))
 
 const Landing = ({ 
     isSmallScreen 
 }) => {
 
-    const [validSnapshot, setValidSnapshot] = useState(false);
-    const [answer, setAnswer] = useState(0);
-    const [guess, setGuess] = useState(0);
-    const [score, setScore] = useState(0);
-    const [scoreHistory, setScoreHistory] = useState([]);
+    const [validSnapshot, setValidSnapshot] = useState(false)
+    const [answer, setAnswer] = useState(0)
+    const [guess, setGuess] = useState(0)
+    const [score, setScore] = useState(0)
+    const [stats, setStats] = useState({
+            "Played" : 0,
+            "Average Score" : 0,
+            "Best Score" : 0,
+    })
+    const [scoreHistory, setScoreHistory] = useState([])
 
-    const today = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
-    const [snapShotDate, setSnapshotDate] = useState(today);
+    const today = new Date().toISOString().split('T')[0] // Get today's date in 'YYYY-MM-DD' format
+    const [snapShotDate, setSnapshotDate] = useState(today)
 
     const changeDate = (days) => {
-        const date = new Date(snapShotDate);
-        date.setDate(date.getDate() + days);
-        setSnapshotDate(date.toISOString().split('T')[0]);
+        const date = new Date(snapShotDate)
+        date.setDate(date.getDate() + days)
+        setSnapshotDate(date.toISOString().split('T')[0])
     }
 
-    const maxPoints = 1000;
+    const maxPoints = 1000
 
     const updateScoreFromUnlockHistory = (days) => {
         switch (days) {
             case 14:
-                setHintsUsed(prevHintsUsed => [...prevHintsUsed, '14 days']);
-                break;
+                setHintsUsed(prevHintsUsed => [...prevHintsUsed, '14 days'])
+                break
             case 28:
-                setHintsUsed(prevHintsUsed => [...prevHintsUsed, '28 days']);
-                break;
+                setHintsUsed(prevHintsUsed => [...prevHintsUsed, '28 days'])
+                break
             default:
-                break;
+                break
         }
-    };
+    }
 
     const hints = {
         "14 days": -100,
         "28 days": -300,
-    };
-    const [hintsUsed, setHintsUsed] = useState([]);
+    }
+    const [hintsUsed, setHintsUsed] = useState([])
 
     const calculateScore = () => {
-        let maxScore = maxPoints;
+        let maxScore = maxPoints
         for (const hint of hintsUsed) {
-            maxScore += hints[hint];
+            maxScore += hints[hint]
         }
-        const accuracyFactor = Math.abs(answer - guess) / 100;
-        const finalScore = maxScore * (1 - accuracyFactor);
-        return finalScore;
-    };
+        const accuracyFactor = Math.abs(answer - guess) / 100
+        const finalScore = maxScore * (1 - accuracyFactor)
+        return Math.round(finalScore)
+    }
 
     const saveScoreToLocalStorage = (finalScore) => {
-        const scores = JSON.parse(localStorage.getItem('scores')) || {};
-        scores[today] = finalScore;
-        localStorage.setItem('scores', JSON.stringify(scores));
-    };
+        const scores = JSON.parse(localStorage.getItem('scores')) || {}
+        scores[today] = finalScore
+        localStorage.setItem('scores', JSON.stringify(scores))
+    }
 
     const getScoreHistoryFromLocalStorage = () => {
-        const scores = JSON.parse(localStorage.getItem('scores')) || {};
-        setScoreHistory(scores);
-    };
+        const scores = JSON.parse(localStorage.getItem('scores')) || {}
+        setScoreHistory(scores)
+    }
 
-    const [openStatsModal, setOpenStatsModal] = useState(false);
+    useEffect(() => {
+        if (scoreHistory) {
+            const scores = Object.values(scoreHistory).map(score => Math.round(score))
+            const totalScore = scores.reduce((acc, score) => acc + score, 0)
+            const averageScore = scores.length > 0 ? Math.round(totalScore / scores.length) : 0
+            const bestScore = scores.length > 0 ? Math.max(...scores) : 0
+            let stats = { 
+                "Played": scores.length, 
+                "Average Score": averageScore, 
+                "Best Score": bestScore 
+            }
+            setStats(stats)
+        }
+    }, [scoreHistory])
+    
+    const [openStatsModal, setOpenStatsModal] = useState(false)
     const handleOpenStatsModal = () => {
-        getScoreHistoryFromLocalStorage();
-        setOpenStatsModal(true);
-    };
-    const handleCloseStatsModal = () => setOpenStatsModal(false);
+        getScoreHistoryFromLocalStorage()
+        setOpenStatsModal(true)
+    }
+    const handleCloseStatsModal = () => setOpenStatsModal(false)
 
-    const [openResultModal, setOpenResultModal] = useState(false);
+    const [openResultModal, setOpenResultModal] = useState(false)
     const handleOpenResultModal = () => {
-        getScoreHistoryFromLocalStorage();
-        setOpenResultModal(true);
-    };
-    const handleCloseResultModal = () => setOpenResultModal(false);
+        getScoreHistoryFromLocalStorage()
+        setOpenResultModal(true)
+    }
+    const handleCloseResultModal = () => setOpenResultModal(false)
 
 
-    const stockDataRef = useRef();
+    const stockDataRef = useRef()
     const submitGuess = (value) => {
-        setGuess(value);
-        const finalScore = calculateScore();
-        setScore(finalScore);
-        saveScoreToLocalStorage(finalScore);
-        handleOpenResultModal();
+        setGuess(value)
+        const finalScore = calculateScore()
+        setScore(finalScore)
+        saveScoreToLocalStorage(finalScore)
+        handleOpenResultModal()
 
         if (stockDataRef.current) {
-            stockDataRef.current.revealAnswer();
+            stockDataRef.current.revealAnswer()
         }
-    };
-
-    const [guessed, setGuessed] = useState(false);
-    const checkIfGuessedToday = () => {
-        const scores = JSON.parse(localStorage.getItem('scores')) || {};
-        if (scores[today]) {
-            setGuessed(true);
-        } else {
-            setGuessed(false);
-        }
-    };
-    useEffect(() => {
-        checkIfGuessedToday();
-        getScoreHistoryFromLocalStorage();
-    }, []);
-    useEffect(() => {
-        setOpenResultModal(guessed);
-    }, [guessed]);
-
-
-    const [openHelpModal, setOpenHelpModal] = useState(false);
-    const navbarClickOnHelp = () => {
-        setOpenHelpModal(true);
     }
-    const handleCloseHelpModal = () => setOpenHelpModal(false);
+
+    const [guessed, setGuessed] = useState(false)
+    const checkIfGuessedToday = () => {
+        const scores = JSON.parse(localStorage.getItem('scores')) || {}
+        if (scores[today]) {
+            setGuessed(true)
+        } else {
+            setGuessed(false)
+        }
+    }
+    useEffect(() => {
+        checkIfGuessedToday()
+        getScoreHistoryFromLocalStorage()
+    }, [])
+    useEffect(() => {
+        setOpenResultModal(guessed)
+    }, [guessed])
+
+
+    const [openHelpModal, setOpenHelpModal] = useState(false)
+    const navbarClickOnHelp = () => {
+        setOpenHelpModal(true)
+    }
+    const handleCloseHelpModal = () => setOpenHelpModal(false)
 
     const navbarClickOnStats = () => {
-        setOpenStatsModal(true);
+        setOpenStatsModal(true)
     }
 
 
@@ -185,6 +205,7 @@ const Landing = ({
             <StatsModal
                 open={openStatsModal}
                 handleCloseModal={handleCloseStatsModal}
+                stats={stats}
                 scoreHistory={scoreHistory}
             />
 
@@ -192,6 +213,7 @@ const Landing = ({
                 open={openResultModal}
                 handleCloseModal={handleCloseResultModal}
                 score={score}
+                stats={stats}
                 scoreHistory={scoreHistory}
             />
 
@@ -201,7 +223,7 @@ const Landing = ({
             />
 
         </Box>
-    );
-};
+    )
+}
 
-export default Landing;
+export default Landing

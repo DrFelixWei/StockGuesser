@@ -2,18 +2,14 @@ import React from 'react';
 import { Typography, Box, IconButton, Modal } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-const StatsModal = ({ open, handleCloseModal, scoreHistory}) => {
+const StatsModal = ({ 
+  open, 
+  handleCloseModal, 
+  stats, 
+  scoreHistory
+}) => {
 
-  const stats = {
-    "Played" : 0,
-    "Average Score" : 0,
-    "Best Score" : 0,
-  }
-
-  const played = 0;
-  const accuracyPercentage = 0;
-  const currentStreak = 0;
-  const longestStreak = 0;
+  console.log("---stats", stats)
 
   return (
     <Modal
@@ -50,18 +46,20 @@ const StatsModal = ({ open, handleCloseModal, scoreHistory}) => {
               STATISTICS
           </Typography>
 
-          <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ margin: 1 }}>
-            {Object.entries(stats).map(([key, value]) => (
-              <Box justifyContent="center" sx={{ margin: 1 }}>
-                <Typography variant="h4" sx={{fontWeight:'bold'}}>
-                    {value}
-                </Typography>
-                <Typography variant="h6">
-                    {key}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
+          { stats &&
+            <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ margin: 1 }}>
+              {Object.entries(stats).map(([key, value]) => (
+                <Box justifyContent="center" sx={{ margin: 1 }}>
+                  <Typography variant="h4" sx={{fontWeight:'bold'}}>
+                      {value}
+                  </Typography>
+                  <Typography variant="h6">
+                      {key}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          }
 
           <Box>
             <Typography variant="h5" sx={{ mt: 3 }}>
