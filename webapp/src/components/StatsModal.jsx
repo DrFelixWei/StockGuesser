@@ -9,7 +9,6 @@ const StatsModal = ({
   scoreHistory
 }) => {
 
-  console.log("---stats", stats)
 
   return (
     <Modal
