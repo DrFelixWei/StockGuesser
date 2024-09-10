@@ -9,6 +9,7 @@ import StockData from '../components/StockData';
 import UserInput from '../components/UserInput';
 import StatsModal from '../components/StatsModal';
 import ResultModal from '../components/ResultModal';
+import HelpModal from '../components/HelpModal';
 
 const StyledContainer = styled(Container)(({ theme }) => ({
     flexGrow: 1,
@@ -132,9 +133,12 @@ const Landing = ({
     }, [guessed]);
 
 
+    const [openHelpModal, setOpenHelpModal] = useState(false);
     const navbarClickOnHelp = () => {
-        console.log('Help clicked');
+        setOpenHelpModal(true);
     }
+    const handleCloseHelpModal = () => setOpenHelpModal(false);
+
     const navbarClickOnStats = () => {
         setOpenStatsModal(true);
     }
@@ -189,6 +193,11 @@ const Landing = ({
                 handleCloseModal={handleCloseResultModal}
                 score={score}
                 scoreHistory={scoreHistory}
+            />
+
+            <HelpModal
+                open={openHelpModal}
+                handleCloseModal={handleCloseHelpModal}
             />
 
         </Box>
