@@ -1,0 +1,8 @@
+{
+    "name": "monorepo",
+    "private": true,
+    "scripts": {
+      "start": "concurrently \"npm run start --prefix api\" \"npm run dev --prefix webapp\""
+    }
+  }
+  
