@@ -92,8 +92,7 @@ export class StockService {
       // } catch (error) {
       //   console.error('Error trying to generate new snapshot inside getSnapshotByDate:', error);
       // }
-      throw new Error('No snapshot found for the given date');
-     
+      return { "error": "No data found for the given date" }; ;
     }
     return result;
   }

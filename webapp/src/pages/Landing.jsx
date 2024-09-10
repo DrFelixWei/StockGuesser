@@ -29,7 +29,7 @@ const Landing = ({
     isSmallScreen 
 }) => {
 
-
+    const [validSnapshot, setValidSnapshot] = useState(false);
     const [answer, setAnswer] = useState(0);
     const [guess, setGuess] = useState(0);
     const [score, setScore] = useState(0);
@@ -153,7 +153,8 @@ const Landing = ({
                     <ArrowBackIosIcon style={{ backgroundColor: '#e0e0e0'}}/>
                 </IconButton>
                 
-                <Typography variant="h3" component="h3">
+                <Typography variant="h4" component="h3">
+                    {/* {snapShotDate} */}
                     { snapShotDate === today ? "Today" : snapShotDate}
                 </Typography>
                 
@@ -168,11 +169,14 @@ const Landing = ({
                     ref={stockDataRef} 
                     date={snapShotDate}
                     updateScoreFromUnlockHistory={updateScoreFromUnlockHistory} 
+                    setValidSnapshot={setValidSnapshot}
                     setAnswer={setAnswer} 
                     />
             </StyledContainer>
             
-            <UserInput submitGuess={submitGuess} alreadyGuessed={guessed} />
+            { validSnapshot &&
+                <UserInput submitGuess={submitGuess} alreadyGuessed={guessed} />
+            }
 
             <StatsModal
                 open={openStatsModal}

@@ -7,7 +7,8 @@ const StockData = forwardRef((
   { 
     date,
     updateScoreFromUnlockHistory, 
-    setAnswer 
+    setValidSnapshot,
+    setAnswer, 
   }, ref) => {
   const [stockDataFull, setStockDataFull] = useState(null)
   const [stockData, setStockData] = useState(null)
@@ -24,19 +25,31 @@ const StockData = forwardRef((
 
     if (response.ok) {
       const result = await response.json()
+
+      if (result.error) {
+        setValidSnapshot(false)
+        setStockData(null)
+        setStockDataFull(null)
+        setSnapshotLoading(false)
+        return
+      }
+
       setStockDataFull(result)
     }
     setSnapshotLoading(false)
   }
 
   useEffect(() => {
-    console.log('fetching snapshot')
     fetchSnapshot()
   }, [])
+  useEffect(() => {
+    fetchSnapshot()
+  }, [date])
 
   useEffect(() => {
     if (!stockDataFull) return
 
+    setValidSnapshot(true)
     const lastDate = new Date(stockDataFull.prices[0].date)
     lastDate.setDate(lastDate.getDate() + 1)
     setSnapshotDate(lastDate)
@@ -86,7 +99,6 @@ const StockData = forwardRef((
   useImperativeHandle(ref, () => ({
     revealAnswer,
   }))
-
 
 
   const backgroundColor = '#1e1e1e'
