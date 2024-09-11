@@ -5,6 +5,11 @@ import { StockService } from './stock.service';
 export class StockController {
   constructor(private readonly stockService: StockService) {}
 
+  @Get('test')
+  async test() {
+    return "test successful";
+  }
+
   @Get('getRandom')
   async getRandomSnapshot() {
     return this.stockService.getRandomSnapshot();
