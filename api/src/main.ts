@@ -10,9 +10,10 @@ async function bootstrap() {
   console.log("allowedOrigins: ", allowedOrigins);
 
   app.enableCors({
-    origin: allowedOrigins,
+    origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+    allowedHeaders: 'Content-Type, Authorization, Accept, X-Requested-With, X-CSRF-Token',
   });
 
   const port = configService.get<number>('PORT') || 3000;
