@@ -7,7 +7,10 @@ async function bootstrap() {
   
   const configService = app.get(ConfigService);
   let allowedOrigins = configService.get<string>('ALLOWED_ORIGINS').split(',');
-  allowedOrigins = allowedOrigins.map((item) => item.replace(';', '').trim()); // railway adding semicolons??
+  allowedOrigins.push('http://stockguesserwebapp-production.up.railway.app');
+  allowedOrigins.push('http://stockguesserapi-production.up.railway.app');
+  allowedOrigins.push('https://stockguesserwebapp-production.up.railway.app');
+  allowedOrigins.push('https://stockguesserapi-production.up.railway.app');
   console.log("allowedOrigins: ", allowedOrigins);
 
   app.enableCors({
