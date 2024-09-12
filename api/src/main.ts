@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   const configService = app.get(ConfigService);
-  const allowedOrigins = configService.get<string>('ALLOWED_ORIGINS').split(',');
+  const allowedOrigins = configService.get<string>('ALLOWED_ORIGINS').split(',').map(origin => origin.replace(';', ''));
   console.log("allowedOrigins: ", allowedOrigins)
 
   app.enableCors({
