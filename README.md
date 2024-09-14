@@ -29,7 +29,7 @@ This is a monorepo divided into api and webapp subfolders.
 The monorepo is configured to be able to start both services from the root: `npm run start`
 
 To run the backend and frontend independently, use these commands
-in /api: `npm run start`
+in /api: `npm run start:dev`
 in /webapp: `npm run dev`
 
 Upon first launch you will have no data. Data is meant to be generated through a cronjob daily. However you can also manually generate one through the admin page.

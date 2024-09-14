@@ -13,7 +13,7 @@ const getColorFromValue = (value) => {
 
 // Custom styled Box for horizontal slider
 const HorizontalSlider = styled(Slider)(({ theme, color }) => ({
-  width: '100%', 
+  width: '80%', 
   '& .MuiSlider-thumb': {
     width: 25, 
     height: 30, 
@@ -81,7 +81,7 @@ const UserInput = ({
           max={maxChange}
           step={0.01} // Set step to 0.01 for finer increments
           aria-labelledby="horizontal-slider"
-          color={sliderColor} // Pass the color as a prop
+          color={sliderColor} 
         />
       </Box>
     </form>

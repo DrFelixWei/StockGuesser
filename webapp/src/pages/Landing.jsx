@@ -172,7 +172,7 @@ const Landing = ({
                 clickOnStats={navbarClickOnStats}
             />
 
-            <Box width="100%" display="flex" alignItems="center" justifyContent="space-between" padding={2}>
+            <Box width="90%" margin="auto" display="flex" alignItems="center" justifyContent="space-between" padding={2}>
                 <IconButton onClick={()=>changeDate(-1)}>
                     <ArrowBackIosIcon style={{ backgroundColor: '#e0e0e0'}}/>
                 </IconButton>

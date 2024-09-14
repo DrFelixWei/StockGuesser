@@ -25,7 +25,7 @@ const Root = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
   position: 'relative',
   width: '100vw',
-  maxWidth: '100vh',
+  maxWidth: '90vh',
   overflow: 'hidden',
 }));
 
