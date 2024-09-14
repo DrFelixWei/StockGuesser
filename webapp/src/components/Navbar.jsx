@@ -25,13 +25,13 @@ const Navbar = ({ isSmallScreen, clickOnHelp, clickOnStats }) => {
         </IconButton>
       </Tooltip>
 
-      <Title variant="h1" component="h1" style={{ fontSize: isSmallScreen ? '2rem' : '3rem' }}>
+      <Typography variant={ isSmallScreen ? 'h5' : 'h4'}>
         Stock Guesser
-      </Title>
+      </Typography>
 
       <Tooltip title="Statistics">
         <IconButton onClick={clickOnStats}>
-          <BarChart />
+          <BarChart style={{ backgroundColor: '#e0e0e0', borderRadius: '50%' }} />
         </IconButton>
       </Tooltip>
     </Box>

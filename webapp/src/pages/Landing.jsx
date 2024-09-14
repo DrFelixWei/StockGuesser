@@ -174,8 +174,9 @@ const Landing = ({
             />
 
             <Box width="90%" margin="auto" display="flex" alignItems="center" justifyContent="space-between" padding={2}>
+
                 <IconButton onClick={()=>changeDate(-1)} disabled={snapShotDate === '2024-09-14'}>
-                    <ArrowBackIosIcon style={{ backgroundColor: '#e0e0e0'}}/>
+                    <ArrowBackIosIcon style={{ backgroundColor: '#e0e0e0', borderRadius: '50%', paddingLeft: '6px' }}/>
                 </IconButton>
                 
                 <Typography variant="h5" component="h3">
@@ -184,8 +185,9 @@ const Landing = ({
                 </Typography>
                 
                 <IconButton onClick={()=>changeDate(1)} disabled={snapShotDate === today}>
-                    <ArrowForwardIosIcon style={{ backgroundColor: '#e0e0e0'}}/>
+                    <ArrowForwardIosIcon style={{ backgroundColor: '#e0e0e0', borderRadius: '50%', padding: '3px' }}/>
                 </IconButton>
+                
             </Box>
 
 
