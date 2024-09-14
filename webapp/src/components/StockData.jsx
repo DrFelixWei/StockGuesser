@@ -111,7 +111,7 @@ const StockData = forwardRef((
         mouseWheel: false,
       },
       height: 300,
-      width: 500,
+      width: 450,
       backgroundColor: backgroundColor, 
     },
     title: {
