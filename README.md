@@ -40,6 +40,7 @@ Once you have generated at least one stockSnapshot, you can try guessing the nex
 - Had to do some weird database things to host postgres on Railway since they default all table and col names to lowercase only and have no auto-increment feature for id
 
 ## Future Features Planned
+- Increase date range of data, current Marketstack free api is limited to only 1 year back
 - Add snapshot of news feed for the random date
 
 

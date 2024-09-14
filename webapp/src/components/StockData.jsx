@@ -115,9 +115,10 @@ const StockData = forwardRef((
       backgroundColor: backgroundColor, 
     },
     title: {
-      text: `${stockData?.name}, ${snapShotDateString}`,
+      text: `${stockData?.name}<br>${snapShotDateString}`,
       style: {
         color: foregroundColor, 
+        fontSize: '30px',
       },
     },
     series: [
