@@ -78,7 +78,7 @@ export class StockService {
     endOfDay.setDate(endOfDay.getDate() + 1); // Next day (00:00:00)
     const result = await this.prisma.stockSnapshot.findFirst({
       where: {
-        dateGenerated: {
+        dategenerated: {
           gte: startOfDay,
           lt: endOfDay,
         },
@@ -115,7 +115,7 @@ export class StockService {
     //   symbol: symbol,
     //   name: tickerData.name,
     //   prices: prices,
-    //   dateGenerated: new Date(),
+    //   dategenerated: new Date(),
     // };
     // const savedSnapshot = await this.saveSnapshot(stockInput);
     // return savedSnapshot
@@ -144,7 +144,7 @@ export class StockService {
       symbol: randomSymbol,
       name: tickerData.name,
       prices: prices,
-      dateGenerated: new Date(),
+      dategenerated: new Date(),
     };
     const savedSnapshot = await this.saveSnapshot(stockInput);
     return savedSnapshot
@@ -156,7 +156,7 @@ export class StockService {
         symbol: data.symbol,
         name: data.name,
         prices: data.prices,
-        dateGenerated: data.dateGenerated || new Date(),
+        dategenerated: data.dategenerated || new Date(),
       },
     });
   }

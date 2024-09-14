@@ -11,7 +11,7 @@ model StockSnapshot {
   id            Int      @id @default(autoincrement())
   symbol        String   
   name          String
-  dateGenerated DateTime
+  dategenerated DateTime
   prices        Json
 
   @@map("stocksnapshot")  // Railway only allows lowercase table names
