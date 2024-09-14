@@ -60,6 +60,17 @@ const UserInput = ({
   return (
     <form onSubmit={handleSubmit}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: 'auto', justifyContent: 'center' }}>
+
+      <HorizontalSlider
+          value={value}
+          onChange={handleSliderChange}
+          min={-maxChange}
+          max={maxChange}
+          step={0.01} // Set step to 0.01 for finer increments
+          aria-labelledby="horizontal-slider"
+          color={sliderColor} 
+        />
+
         <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
           <TextField
             label="Value"
@@ -74,15 +85,7 @@ const UserInput = ({
           </Button>
         </Box>
 
-        <HorizontalSlider
-          value={value}
-          onChange={handleSliderChange}
-          min={-maxChange}
-          max={maxChange}
-          step={0.01} // Set step to 0.01 for finer increments
-          aria-labelledby="horizontal-slider"
-          color={sliderColor} 
-        />
+
       </Box>
     </form>
   );
