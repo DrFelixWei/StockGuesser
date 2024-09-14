@@ -13,4 +13,6 @@ model StockSnapshot {
   name          String
   dateGenerated DateTime
   prices        Json
+
+  @@map("stocksnapshot")  // Railway only allows lowercase table names
 }
