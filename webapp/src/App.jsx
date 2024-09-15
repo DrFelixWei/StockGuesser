@@ -47,8 +47,8 @@ function App() {
       <CssBaseline />
       <Router>
         <Root>
-          <VerticalLine style={{ left: 0 }} />
-          <VerticalLine style={{ right: 0 }} />
+          {/* <VerticalLine style={{ left: 0 }} /> */}
+          {/* <VerticalLine style={{ right: 0 }} /> */}
           <Box display="flex" flexDirection="column" alignItems="center" width="100%">
 
             <Routes>
